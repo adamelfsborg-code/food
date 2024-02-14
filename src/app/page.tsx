@@ -1,4 +1,4 @@
-import { AddUserAction } from "@/actions/user/user";
+import { Button } from "@/components/ui/button";
 
 export type PageProps = {
   params: { [key: string]: string | string[] | undefined };
@@ -6,11 +6,8 @@ export type PageProps = {
 };
 
 const Page = async (props: PageProps) => {
-  const users = await AddUserAction({})
-  console.log(users)
   return (
-    <main className="">
-      <h1>Food</h1>
+    <main className="container relative">
     </main>
   )
 }

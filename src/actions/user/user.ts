@@ -2,7 +2,7 @@
 
 import sql from "@/lib/db"
 import { UserSchema } from "./types";
-import getErrorMessage from "@/lib/error";
+import { revalidatePath } from "next/cache";
 
 type AddUserActionProps = unknown
 
@@ -17,23 +17,17 @@ export const AddUserAction = async (props: AddUserActionProps) => {
     }
   }
 
-  try {
-    await sql`
-      INSERT INTO app_user 
-      (
-        name, password
-      )
-      VALUES
-      (
-        ${validatedUserSchema.data.name}, ${validatedUserSchema.data.password} 
-      ),
-      ON CONFLICT DO NOTHING
-    `
-  } catch (e) {
-    return {
-      success: false,
-      error: getErrorMessage(e)
-    }
-  }
-}
-;
+  await sql`
+    INSERT INTO app_user 
+    (
+      name, password
+    )
+    VALUES
+    (
+      ${validatedUserSchema.data.name}, ${validatedUserSchema.data.password} 
+    )
+    ON CONFLICT DO NOTHING
+  `
+
+  revalidatePath('/', 'layout')
+};
