@@ -1,10 +1,10 @@
 "use server"
 
+import { hashPassword, matchPassword, login, logout } from "@/lib/auth";
 import sql from "@/lib/db"
 import { TUserDtoSchema, TUserTableSchema, UserDtoSchema, UserTableSchema, UserTableWithPasswordSchema } from "@/lib/schema/user";
 import { revalidatePath } from "next/cache";
 import { ZodError } from "zod";
-import { hashPassword, login, logout, matchPassword } from "./auth";
 
 export const RegisterUserAction = async (props: unknown) => {
 

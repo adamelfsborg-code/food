@@ -21,6 +21,9 @@ export function SiteHeader(props: SiteHeaderProps) {
           <nav className="flex items-center gap-x-2">
             {props.session?.user ? (
               <>
+                <div>
+                  <h4 className="text-sm font-medium leading-none">{props.session.user.name}</h4>
+                </div>
                 <Logout />
               </>
             ) : (

@@ -5,7 +5,7 @@ import { cn } from "@/lib/utils";
 import { ThemeProvider } from "@/components/theme-provider";
 import { SiteHeader } from "@/components/site-header";
 import { Toaster } from "@/components/ui/toaster";
-import { getSession } from "@/actions/user/auth";
+import { getSession } from "@/lib/auth";
 export const metadata: Metadata = {
   title: "Food",
   description: "Nutrition app",

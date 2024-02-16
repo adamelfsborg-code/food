@@ -2,7 +2,7 @@ import { parsedEnv } from "@/lib/schema/env";
 import { JWTPayload, SignJWT, jwtVerify } from "jose";
 import { cookies } from "next/headers";
 import { NextRequest, NextResponse } from "next/server";
-import bcrypt from 'bcrypt';
+import bcrypt from 'bcryptjs';
 import { TUserTableSchema } from "@/lib/schema/user";
 import { SessionSchema } from "@/lib/schema/session";
 
@@ -34,7 +34,7 @@ export async function decrypt(input: string): Promise<any> {
 }
 
 export async function login(user: TUserTableSchema) {
-  const expires = new Date(Date.now() + 10 * 1000);
+  const expires = new Date(Date.now() * parsedEnv.SESSION_EXPIRES);
   const session = await encrypt({ user, expires });
 
   cookies().set("session", session, { expires, httpOnly: true });
@@ -59,12 +59,11 @@ export async function updateSession(request: NextRequest) {
   const session = request.cookies.get("session")?.value;
   if (!session) return;
 
-
   const decrypted = await decrypt(session);
   const validSession = SessionSchema.safeParse(decrypted);
   if (!validSession.success) return
 
-  validSession.data.expires = new Date(Date.now() + 10 * 1000);
+  validSession.data.expires = new Date(Date.now() * parsedEnv.SESSION_EXPIRES);
   const res = NextResponse.next();
   res.cookies.set({
     name: "session",
