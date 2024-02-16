@@ -1,5 +1,6 @@
 import postgres from 'postgres'
+import { parsedEnv } from './schema/env'
 
-const sql = postgres(process.env.DB_ADDR!) 
+const sql = postgres(parsedEnv.DB_ADDR!) 
 
 export default sql

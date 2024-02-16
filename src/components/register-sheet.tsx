@@ -1,4 +1,3 @@
-import { UserSchema } from "@/actions/user/types"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import {
@@ -11,27 +10,37 @@ import {
 } from "@/components/ui/sheet"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
-import { z } from "zod"
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "./ui/form"
 import { AddUserAction } from "@/actions/user/user"
+import { TUserCreateSchema, UserCreateSchema } from "@/lib/schema/user"
+import { ZodIssue } from "zod"
+import { handleZodFormErrors } from "@/lib/error"
+import { toast } from "react-hot-toast"
 
 export function RegisterSheet() {
 
-  const form = useForm<z.infer<typeof UserSchema>>({
-    resolver: zodResolver(UserSchema),
+  const form = useForm<TUserCreateSchema>({
+    resolver: zodResolver(UserCreateSchema),
     defaultValues: {
       name: "",
       password: ""
     },
   })
 
-  async function onSubmit(values: z.infer<typeof UserSchema>) {
-    await AddUserAction(values)
+  async function onSubmit(values: TUserCreateSchema) {
+    const response = await AddUserAction(values)
+    if (!response?.success && response?.error) {
+      const zodError = response.error as ZodIssue[];
+      handleZodFormErrors<keyof TUserCreateSchema>(form, zodError);
+    }
+
+    toast.success(response.message!)
+
   }
 
   return (
     <Sheet>
-      <SheetTrigger>
+      <SheetTrigger asChild>
         <Button variant='outline' >Register</Button>
       </SheetTrigger>
       <SheetContent>
