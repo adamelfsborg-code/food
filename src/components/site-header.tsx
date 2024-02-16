@@ -3,8 +3,15 @@
 import { ModeToggle } from "@/components/mode-toggle"
 import { MainNav } from "./main-nav"
 import { RegisterSheet } from "./register-sheet"
+import { LoginSheet } from "./login-sheet"
+import { Logout } from "./logout"
+import { TSessionSchema } from "@/lib/schema/session"
 
-export function SiteHeader() {
+type SiteHeaderProps = {
+  session: TSessionSchema | undefined
+}
+
+export function SiteHeader(props: SiteHeaderProps) {
   return (
     <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container flex h-14 max-w-screen-2xl items-center">
@@ -12,7 +19,16 @@ export function SiteHeader() {
         <div className="flex flex-1 items-center justify-between space-x-2 md:justify-end">
           <div className="w-full flex-1 md:w-auto md:flex-none"></div>
           <nav className="flex items-center gap-x-2">
-            <RegisterSheet />
+            {props.session?.user ? (
+              <>
+                <Logout />
+              </>
+            ) : (
+              <>
+                <RegisterSheet />
+                <LoginSheet />
+              </>
+            )}
             <ModeToggle />
           </nav>
         </div>

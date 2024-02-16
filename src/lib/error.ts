@@ -18,8 +18,9 @@ export const getErrorMessage = (error: unknown): string => {
 
 export const handleZodFormErrors = <T>(
   form: any,
-  zodErrors: ZodIssue[],
+  errors: unknown,
 ) => {
+  const zodErrors = errors as ZodIssue[];
   for (const issue of zodErrors) {
     const fieldName = issue.path[0] as T;
     const errorMessage = issue.message;

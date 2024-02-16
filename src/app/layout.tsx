@@ -4,8 +4,8 @@ import { Inter as FontSans } from "next/font/google";
 import { cn } from "@/lib/utils";
 import { ThemeProvider } from "@/components/theme-provider";
 import { SiteHeader } from "@/components/site-header";
-import { Toaster } from 'react-hot-toast';
-
+import { Toaster } from "@/components/ui/toaster";
+import { getSession } from "@/actions/user/auth";
 export const metadata: Metadata = {
   title: "Food",
   description: "Nutrition app",
@@ -16,11 +16,15 @@ export const fontSans = FontSans({
   variable: "--font-sans",
 });
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+
+  const session = await getSession()  
+  console.log(session)
+
   return (
     <html lang="en" suppressHydrationWarning>
       <body
@@ -37,15 +41,12 @@ export default function RootLayout({
         >
         <div vaul-drawer-wrapper="">
           <div className="relative flex min-h-screen flex-col bg-background">
-            <SiteHeader />
+            <SiteHeader session={session} />
             <main className="flex-1">{children}</main>
           </div>
         </div>
         </ThemeProvider>
-        <Toaster
-          position="top-center"
-          reverseOrder={false}
-        />
+        <Toaster />
       </body>
     </html>
   );

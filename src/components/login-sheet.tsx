@@ -10,40 +10,33 @@ import {
 } from "@/components/ui/sheet"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
-import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "./ui/form"
-import { RegisterUserAction } from "@/actions/user/user"
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "./ui/form"
+import { LoginUserAction } from "@/actions/user/user"
+import { TUserLoginSchema, UserLoginSchema } from "@/lib/schema/user"
 import { handleZodFormErrors } from "@/lib/error"
-import { useToast } from "./ui/use-toast"
-import { TUserDtoSchema, UserDtoSchema } from "@/lib/schema/user"
 
-export function RegisterSheet() {
-  const { toast } = useToast()
-  const form = useForm<TUserDtoSchema>({
-    resolver: zodResolver(UserDtoSchema),
+export function LoginSheet() {
+  const form = useForm<TUserLoginSchema>({
+    resolver: zodResolver(UserLoginSchema),
     defaultValues: {
       name: "",
       password: ""
     },
   })
 
-  async function onSubmit(values: TUserDtoSchema) {
-    const response = await RegisterUserAction(values)
-    if (!response?.success && response?.error) return handleZodFormErrors<keyof TUserDtoSchema>(form, response.error)
-
-    toast({
-      description: response.message!,
-    })
-
+  async function onSubmit(values: TUserLoginSchema) {
+    const response = await LoginUserAction(values)
+    if (!response?.success && response?.error) return handleZodFormErrors<keyof TUserLoginSchema>(form, response.error)
   }
 
   return (
     <Sheet>
       <SheetTrigger asChild>
-        <Button variant='outline'>Register</Button>
+        <Button variant='outline' >Login</Button>
       </SheetTrigger>
       <SheetContent>
         <SheetHeader>
-          <SheetTitle>Register</SheetTitle>
+          <SheetTitle>Login</SheetTitle>
           <SheetDescription>
             Create your account here
           </SheetDescription>
@@ -60,9 +53,6 @@ export function RegisterSheet() {
                     <FormControl>
                       <Input placeholder="..." {...field} />
                     </FormControl>
-                    <FormDescription>
-                      This is your public display name.
-                    </FormDescription>
                     <FormMessage />
                   </FormItem>
                 )}

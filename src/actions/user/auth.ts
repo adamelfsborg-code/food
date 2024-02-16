@@ -1,13 +1,24 @@
-import sql from "@/lib/db";
 import { parsedEnv } from "@/lib/schema/env";
-import { SignJWT, jwtVerify } from "jose";
+import { JWTPayload, SignJWT, jwtVerify } from "jose";
 import { cookies } from "next/headers";
 import { NextRequest, NextResponse } from "next/server";
+import bcrypt from 'bcrypt';
+import { TUserTableSchema } from "@/lib/schema/user";
+import { SessionSchema } from "@/lib/schema/session";
+
 
 const key = new TextEncoder().encode(parsedEnv.SECRET_KEY);
 
+export async function hashPassword(password: string): Promise<string> {
+  return await bcrypt.hash(password, 10);
+}
+
+export async function matchPassword(hashedPassword: string, plainPassword: string): Promise<boolean> {
+  return await bcrypt.compare(plainPassword, hashedPassword)
+}
+
 export async function encrypt(payload: any) {
-  return await new SignJWT(payload)
+  return await new SignJWT(payload as JWTPayload)
     .setProtectedHeader({ alg: "HS256" })
     .setIssuedAt()
     .setExpirationTime("10 sec from now")
@@ -18,46 +29,48 @@ export async function decrypt(input: string): Promise<any> {
   const { payload } = await jwtVerify(input, key, {
     algorithms: ["HS256"],
   });
+
   return payload;
 }
 
-export async function login(formData: FormData) {
-  // Verify credentials && get the user
-
-  const user = { email: formData.get("email"), name: "John" };
-
-  // Create the session
+export async function login(user: TUserTableSchema) {
   const expires = new Date(Date.now() + 10 * 1000);
   const session = await encrypt({ user, expires });
 
-  // Save the session in a cookie
   cookies().set("session", session, { expires, httpOnly: true });
 }
 
 export async function logout() {
-  // Destroy the session
   cookies().set("session", "", { expires: new Date(0) });
 }
 
 export async function getSession() {
   const session = cookies().get("session")?.value;
-  if (!session) return null;
-  return await decrypt(session);
+  if (!session) return;
+
+  const decrypted = await decrypt(session);
+  const validSession = SessionSchema.safeParse(decrypted);
+  if (!validSession.success) return
+
+  return validSession.data
 }
 
 export async function updateSession(request: NextRequest) {
   const session = request.cookies.get("session")?.value;
   if (!session) return;
 
-  // Refresh the session so it doesn't expire
-  const parsed = await decrypt(session);
-  parsed.expires = new Date(Date.now() + 10 * 1000);
+
+  const decrypted = await decrypt(session);
+  const validSession = SessionSchema.safeParse(decrypted);
+  if (!validSession.success) return
+
+  validSession.data.expires = new Date(Date.now() + 10 * 1000);
   const res = NextResponse.next();
   res.cookies.set({
     name: "session",
-    value: await encrypt(parsed),
+    value: await encrypt(validSession.data),
     httpOnly: true,
-    expires: parsed.expires,
+    expires: validSession.data.expires,
   });
   return res;
 }
