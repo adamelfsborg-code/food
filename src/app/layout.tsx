@@ -6,6 +6,7 @@ import { ThemeProvider } from "@/components/theme-provider";
 import { SiteHeader } from "@/components/site-header";
 import { Toaster } from "@/components/ui/toaster";
 import { getSession } from "@/lib/auth";
+
 export const metadata: Metadata = {
   title: "Food",
   description: "Nutrition app",
@@ -21,9 +22,10 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-
   const session = await getSession()  
-  console.log(session)
+
+    
+  
 
   return (
     <html lang="en" suppressHydrationWarning>

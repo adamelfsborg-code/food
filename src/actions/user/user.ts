@@ -2,9 +2,39 @@
 
 import { hashPassword, matchPassword, login, logout } from "@/lib/auth";
 import sql from "@/lib/db"
-import { TUserDtoSchema, TUserTableSchema, UserDtoSchema, UserTableSchema, UserTableWithPasswordSchema } from "@/lib/schema/user";
+import { parsedEnv } from "@/lib/schema/env";
+import { RegisterResponseSchema, TUserDtoSchema, TUserTableSchema, UserDtoSchema, UserTableSchema, UserTableWithPasswordSchema } from "@/lib/schema/user";
 import { revalidatePath } from "next/cache";
 import { ZodError } from "zod";
+
+export const RegisterAPI = async (props: unknown) => {
+  const registerSchema = UserDtoSchema.safeParse(props);
+
+  if (!registerSchema.success) return {
+    success: false,
+    error: registerSchema.error
+  }
+
+  const response = await fetch(`${parsedEnv.API_ADDR}/users/register`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ name: registerSchema.data.name, password: registerSchema.data.password }),
+  });
+  const result = await response.json();
+  const responseSchema = RegisterResponseSchema.safeParse(result)
+
+  if (!responseSchema.success) return {
+    success: false,
+    error: responseSchema.error
+  }
+
+  return {
+    success: true,
+    message: responseSchema.data.message
+  }
+}
 
 export const RegisterUserAction = async (props: unknown) => {
 

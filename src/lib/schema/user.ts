@@ -31,3 +31,10 @@ export const UserLoginSchema = z.object({
 })
 
 export type TUserLoginSchema = z.infer<typeof UserLoginSchema>;
+
+export const RegisterResponseSchema = z.object({
+  message: z.string().describe('Response from API'),
+})
+
+export type TRegisterResponseSchema = z.infer<typeof RegisterResponseSchema>;
+

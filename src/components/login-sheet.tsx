@@ -14,13 +14,16 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "
 import { LoginUserAction } from "@/actions/user/user"
 import { TUserLoginSchema, UserLoginSchema } from "@/lib/schema/user"
 import { handleZodFormErrors } from "@/lib/error"
+import { useState } from "react"
 
 export function LoginSheet() {
+  const [sheetOpen, setSheetOpen] = useState(true);
+
   const form = useForm<TUserLoginSchema>({
     resolver: zodResolver(UserLoginSchema),
     defaultValues: {
-      name: "",
-      password: ""
+      name: "Adam Elfsborg",
+      password: "TrojanBaoz42!"
     },
   })
 
@@ -51,7 +54,7 @@ export function LoginSheet() {
                   <FormItem>
                     <FormLabel>Name</FormLabel>
                     <FormControl>
-                      <Input placeholder="..." {...field} />
+                      <Input placeholder="Name" {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -64,13 +67,13 @@ export function LoginSheet() {
                   <FormItem>
                     <FormLabel>Password</FormLabel>
                     <FormControl>
-                      <Input type="password" placeholder="..." {...field} />
+                      <Input type="password" placeholder="Password" {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
                 )}
               />
-              <Button type="submit">Register</Button>
+              <Button type="submit">Login</Button>
             </form>
           </Form>
         </div>

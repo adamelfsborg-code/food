@@ -2,10 +2,9 @@
 
 import { ModeToggle } from "@/components/mode-toggle"
 import { MainNav } from "./main-nav"
-import { RegisterSheet } from "./register-sheet"
-import { LoginSheet } from "./login-sheet"
 import { Logout } from "./logout"
 import { TSessionSchema } from "@/lib/schema/session"
+import AuthSheet from "./auth-sheet"
 
 type SiteHeaderProps = {
   session: TSessionSchema | undefined
@@ -28,8 +27,7 @@ export function SiteHeader(props: SiteHeaderProps) {
               </>
             ) : (
               <>
-                <RegisterSheet />
-                <LoginSheet />
+                <AuthSheet open={!props.session} />
               </>
             )}
             <ModeToggle />

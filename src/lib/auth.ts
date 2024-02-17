@@ -34,7 +34,7 @@ export async function decrypt(input: string): Promise<any> {
 }
 
 export async function login(user: TUserTableSchema) {
-  const expires = new Date(Date.now() * parsedEnv.SESSION_EXPIRES);
+  const expires = new Date(Date.now() + 10 * 1000);
   const session = await encrypt({ user, expires });
 
   cookies().set("session", session, { expires, httpOnly: true });
@@ -63,7 +63,7 @@ export async function updateSession(request: NextRequest) {
   const validSession = SessionSchema.safeParse(decrypted);
   if (!validSession.success) return
 
-  validSession.data.expires = new Date(Date.now() * parsedEnv.SESSION_EXPIRES);
+  validSession.data.expires = new Date(Date.now() + 10 * 1000);
   const res = NextResponse.next();
   res.cookies.set({
     name: "session",
