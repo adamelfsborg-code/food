@@ -9,11 +9,7 @@ export function Logout() {
   async function onSubmit() {
     const response = await LogoutUserAction()
 
-
     toast({
-      className: cn(
-        'top-0 text-center flex fixed md:max-w-[420px] md:top-4 md:right-4'
-      ),
       description: response.message,
     });
 

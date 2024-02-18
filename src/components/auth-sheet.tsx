@@ -43,26 +43,33 @@ const AuthSheet = (props: AuthSheetProps) => {
 
   async function onRegister(values: TUserDtoSchema) {
     const response = await RegisterAPI(values);
-    if (!response?.success && response?.error)
-      return handleZodFormErrors<keyof TUserDtoSchema>(form, response.error);
+    if (!response?.success && response?.error) {
+      toast({
+        variant: 'destructive',
+        description: response.error
+      })
+
+      return
+    }
 
     toast({
-      className: cn(
-        "top-0 right-0 flex fixed md:max-w-[420px] md:top-4 md:right-4"
-      ),
       description: response.message,
     });
   }
 
   async function onLogin(values: TUserDtoSchema) {
     const response = await LoginAPI(values);
-    if (!response?.success && response?.error)
-      return handleZodFormErrors<keyof TUserDtoSchema>(form, response.error);
+    
+    if (!response?.success && response?.error) {
+      toast({
+        variant: 'destructive',
+        description: response.error
+      })
+
+      return
+    }
 
     toast({
-      className: cn(
-        "top-0 right-0 flex fixed md:max-w-[420px] md:top-4 md:right-4"
-      ),
       description: response.message,
     });
   }

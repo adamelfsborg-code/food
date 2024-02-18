@@ -2,7 +2,7 @@
 
 import { logout } from "@/lib/auth";
 import { parsedEnv } from "@/lib/schema/env";
-import { LoginResponseSchema, PingUserSchema, RegisterResponseSchema, TUserDtoSchema, TUserTableSchema, UserDtoSchema, UserTableSchema } from "@/lib/schema/user";
+import { LoginResponseSchema, PingUserSchema, RegisterResponseSchema, UserDtoSchema, UserTableSchema } from "@/lib/schema/user";
 import { revalidatePath } from "next/cache";
 import { cookies } from "next/headers";
 
@@ -11,7 +11,7 @@ export const RegisterAPI = async (props: unknown) => {
 
   if (!registerSchema.success) return {
     success: false,
-    error: registerSchema.error
+    error: registerSchema.error.message
   }
 
   const response = await fetch(`${parsedEnv.API_USER_ADDR}/users/register`, {
@@ -21,12 +21,21 @@ export const RegisterAPI = async (props: unknown) => {
     },
     body: JSON.stringify({ name: registerSchema.data.name, password: registerSchema.data.password }),
   });
+
+  if (!response.ok) {
+    const message = await response.text()
+    return {
+      success: false,
+      error: message
+    }
+  }
+
   const result = await response.json();
   const responseSchema = RegisterResponseSchema.safeParse(result)
 
   if (!responseSchema.success) return {
     success: false,
-    error: responseSchema.error
+    error: responseSchema.error.message
   }
 
   return {
@@ -40,7 +49,7 @@ export const LoginAPI = async (props: unknown) => {
 
   if (!loginSchema.success) return {
     success: false,
-    error: loginSchema.error
+    error: loginSchema.error.message
   }
 
   const response = await fetch(`${parsedEnv.API_USER_ADDR}/users/login`, {
@@ -50,12 +59,21 @@ export const LoginAPI = async (props: unknown) => {
     },
     body: JSON.stringify({ name: loginSchema.data.name, password: loginSchema.data.password }),
   });
+
+  if (!response.ok) {
+    const message = await response.text()
+    return {
+      success: false,
+      error: message
+    }
+  }
+
   const result = await response.json();
   const responseSchema = LoginResponseSchema.safeParse(result)
 
   if (!responseSchema.success) return {
     success: false,
-    error: responseSchema.error
+    error: responseSchema.error.message
   }
 
   cookies().set("X-USER-ID", responseSchema.data.token, { httpOnly: true });
@@ -73,7 +91,7 @@ export const PingUserAPI = async (props: unknown) => {
 
   if (!pingUserSchema.success) return {
     success: false,
-    error: pingUserSchema.error
+    error: pingUserSchema.error.message
   }
 
   const response = await fetch(`${parsedEnv.API_USER_ADDR}/users/ping`, {
@@ -83,13 +101,20 @@ export const PingUserAPI = async (props: unknown) => {
       'Authorization': `Bearer ${pingUserSchema.data.token}`
     },
   });
-  console.log(response)
+
+  if (!response.ok) {
+    const message = await response.text()
+    return {
+      success: false,
+      error: message
+    }
+  }
   const result = await response.json();
   const responseSchema = UserTableSchema.safeParse(result)
 
   if (!responseSchema.success) return {
     success: false,
-    error: responseSchema.error
+    error: responseSchema.error.message
   }
 
   return {
