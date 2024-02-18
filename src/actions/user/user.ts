@@ -1,11 +1,10 @@
 "use server"
 
-import { hashPassword, matchPassword, login, logout } from "@/lib/auth";
-import sql from "@/lib/db"
+import { logout } from "@/lib/auth";
 import { parsedEnv } from "@/lib/schema/env";
-import { RegisterResponseSchema, TUserDtoSchema, TUserTableSchema, UserDtoSchema, UserTableSchema, UserTableWithPasswordSchema } from "@/lib/schema/user";
+import { LoginResponseSchema, PingUserSchema, RegisterResponseSchema, TUserDtoSchema, TUserTableSchema, UserDtoSchema, UserTableSchema } from "@/lib/schema/user";
 import { revalidatePath } from "next/cache";
-import { ZodError } from "zod";
+import { cookies } from "next/headers";
 
 export const RegisterAPI = async (props: unknown) => {
   const registerSchema = UserDtoSchema.safeParse(props);
@@ -15,7 +14,7 @@ export const RegisterAPI = async (props: unknown) => {
     error: registerSchema.error
   }
 
-  const response = await fetch(`${parsedEnv.API_ADDR}/users/register`, {
+  const response = await fetch(`${parsedEnv.API_USER_ADDR}/users/register`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -36,106 +35,66 @@ export const RegisterAPI = async (props: unknown) => {
   }
 }
 
-export const RegisterUserAction = async (props: unknown) => {
+export const LoginAPI = async (props: unknown) => {
+  const loginSchema = UserDtoSchema.safeParse(props);
 
-  const validatedUserRegisterSchema = UserDtoSchema.safeParse(props);
-
-  if (!validatedUserRegisterSchema.success) {
-    return {
-      success: false,
-      error: validatedUserRegisterSchema.error,
-    }
+  if (!loginSchema.success) return {
+    success: false,
+    error: loginSchema.error
   }
 
-  try {
+  const response = await fetch(`${parsedEnv.API_USER_ADDR}/users/login`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ name: loginSchema.data.name, password: loginSchema.data.password }),
+  });
+  const result = await response.json();
+  const responseSchema = LoginResponseSchema.safeParse(result)
 
-    const exists = await sql`SELECT 1 FROM app_user au WHERE au."name" = ${validatedUserRegisterSchema.data.name}`
-    if (exists.length > 0) {
-      throw new ZodError<TUserDtoSchema>([{ path: ['name'], message: 'Name is taken', code: 'custom' }]);
-    }
-
-    const response = await sql`
-      INSERT INTO app_user 
-      (
-        name, password
-      )
-      VALUES
-      (
-        ${validatedUserRegisterSchema.data.name}, ${await hashPassword(validatedUserRegisterSchema.data.password)}
-      )
-      RETURNING id, timestamp, name
-    `
-    if (response.length > 0) {
-      const validatedUserTableSchema = UserTableSchema.safeParse(response[0])
-      if (!validatedUserTableSchema.success) {
-        return {
-          success: false,
-          error: validatedUserTableSchema.error
-        }
-      }
-    } else {
-      throw new ZodError<TUserTableSchema>([{ path: ['name'], message: 'User not created, please try again.', code: 'custom' }]);
-    }
-    
-    revalidatePath('/', 'layout')
-    
-    return {
-      success: true,
-      message: 'Registerd!'
-    }
-
-  } catch (e) {
-    const error = e as ZodError
-    return {
-      success: false,
-      error: error.issues,
-    };
+  if (!responseSchema.success) return {
+    success: false,
+    error: responseSchema.error
   }
-};
 
-export const LoginUserAction = async (props: unknown) => {
+  cookies().set("X-USER-ID", responseSchema.data.token, { httpOnly: true });
 
-  const validatedUserLoginSchema = UserDtoSchema.safeParse(props);
+  revalidatePath('/', 'layout');
 
-  if (!validatedUserLoginSchema.success) {
-    return {
-      success: false,
-      error: validatedUserLoginSchema.error,
-    }
+  return {
+    success: true,
+    message: 'You are logged in'
   }
-  try {
-    const unkownUser = await sql`SELECT au.* FROM app_user au WHERE au."name" = ${validatedUserLoginSchema.data.name}`
-    const validateUserTableWithPasswordSchema = UserTableWithPasswordSchema.safeParse(unkownUser[0])
-    if (!validateUserTableWithPasswordSchema.success) {
-      return {
-        success: false,
-        error: validateUserTableWithPasswordSchema.error,
-      }
-    }
-    const passwordMatch = await matchPassword(validateUserTableWithPasswordSchema.data.password, validatedUserLoginSchema.data.password)
-    if (!passwordMatch) {
-      throw new ZodError<TUserTableSchema>([{ path: ['name'], message: 'Name or password is incorrect.', code: 'custom' }]);
-    }
-  
-    const validUser = await sql`SELECT au.* FROM app_user au WHERE au."name" = ${validateUserTableWithPasswordSchema.data.name}`
-    const validateValidUserTableSchema = UserTableSchema.safeParse(validUser[0]);
-    if (!validateValidUserTableSchema.success) {
-      return {
-        success: false,
-        error: validateValidUserTableSchema.error,
-      }
-    }
+}
 
-    await login(validateValidUserTableSchema.data)
+export const PingUserAPI = async (props: unknown) => {
+  const pingUserSchema = PingUserSchema.safeParse(props);
 
-    revalidatePath('/', 'layout')
-    
-  } catch (e) {
-    const error = e as ZodError
-    return {
-      success: false,
-      error: error.issues,
-    };
+  if (!pingUserSchema.success) return {
+    success: false,
+    error: pingUserSchema.error
+  }
+
+  const response = await fetch(`${parsedEnv.API_USER_ADDR}/users/ping`, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${pingUserSchema.data.token}`
+    },
+  });
+  console.log(response)
+  const result = await response.json();
+  const responseSchema = UserTableSchema.safeParse(result)
+
+  if (!responseSchema.success) return {
+    success: false,
+    error: responseSchema.error
+  }
+
+  return {
+    success: true,
+    user: responseSchema.data
   }
 }
 

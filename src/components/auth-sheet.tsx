@@ -18,7 +18,7 @@ import {
   SheetTitle,
   SheetDescription,
 } from "./ui/sheet";
-import { RegisterAPI } from "@/actions/user/user";
+import { LoginAPI, RegisterAPI } from "@/actions/user/user";
 import { handleZodFormErrors } from "@/lib/error";
 import { TUserDtoSchema, UserDtoSchema } from "@/lib/schema/user";
 import { cn } from "@/lib/utils";
@@ -41,7 +41,7 @@ const AuthSheet = (props: AuthSheetProps) => {
     },
   });
 
-  async function onSubmit(values: TUserDtoSchema) {
+  async function onRegister(values: TUserDtoSchema) {
     const response = await RegisterAPI(values);
     if (!response?.success && response?.error)
       return handleZodFormErrors<keyof TUserDtoSchema>(form, response.error);
@@ -54,6 +54,20 @@ const AuthSheet = (props: AuthSheetProps) => {
     });
   }
 
+  async function onLogin(values: TUserDtoSchema) {
+    const response = await LoginAPI(values);
+    if (!response?.success && response?.error)
+      return handleZodFormErrors<keyof TUserDtoSchema>(form, response.error);
+
+    toast({
+      className: cn(
+        "top-0 right-0 flex fixed md:max-w-[420px] md:top-4 md:right-4"
+      ),
+      description: response.message,
+    });
+  }
+
+
   useEffect(() => {
     setOpen(props.open);
   }, [props.open]);
@@ -61,7 +75,7 @@ const AuthSheet = (props: AuthSheetProps) => {
   return (
     <Sheet open={open}>
       <SheetContent>
-        <Tabs defaultValue="login" className="w-[400px]">
+        <Tabs defaultValue="login">
           <TabsList className="grid w-full grid-cols-2">
             <TabsTrigger value="login">Login</TabsTrigger>
             <TabsTrigger value="register">Register</TabsTrigger>
@@ -74,7 +88,7 @@ const AuthSheet = (props: AuthSheetProps) => {
             <div className="grid gap-4 py-4">
               <Form {...form}>
                 <form
-                  onSubmit={form.handleSubmit(onSubmit)}
+                  onSubmit={form.handleSubmit(onLogin)}
                   className="space-y-8"
                 >
                   <FormField
@@ -110,7 +124,7 @@ const AuthSheet = (props: AuthSheetProps) => {
                       </FormItem>
                     )}
                   />
-                  <Button type="submit">Register</Button>
+                  <Button type="submit">Login</Button>
                 </form>
               </Form>
             </div>
@@ -123,7 +137,7 @@ const AuthSheet = (props: AuthSheetProps) => {
             <div className="grid gap-4 py-4">
               <Form {...form}>
                 <form
-                  onSubmit={form.handleSubmit(onSubmit)}
+                  onSubmit={form.handleSubmit(onRegister)}
                   className="space-y-8"
                 >
                   <FormField

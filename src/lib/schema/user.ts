@@ -16,25 +16,20 @@ export const UserTableSchema = z.object({
 
 export type TUserTableSchema = z.infer<typeof UserTableSchema>;
 
-export const UserTableWithPasswordSchema = z.object({
-  id: z.string().uuid(),
-  timestamp: ZodCustomDate,
-  name: z.string(),
-  password: z.string()
-})
-
-export type TUserTableWithPasswordSchema = z.infer<typeof UserTableWithPasswordSchema>;
-
-export const UserLoginSchema = z.object({
-  name: z.string(),
-  password: z.string().min(10)
-})
-
-export type TUserLoginSchema = z.infer<typeof UserLoginSchema>;
-
 export const RegisterResponseSchema = z.object({
   message: z.string().describe('Response from API'),
 })
 
 export type TRegisterResponseSchema = z.infer<typeof RegisterResponseSchema>;
 
+export const LoginResponseSchema = z.object({
+  token: z.string().describe('User access token'),
+})
+
+export type TLoginResponseSchema = z.infer<typeof LoginResponseSchema>;
+
+export const PingUserSchema = z.object({
+  token: z.string().describe('User access token'),
+}) 
+
+export type TPingUserSchema = z.infer<typeof PingUserSchema>;

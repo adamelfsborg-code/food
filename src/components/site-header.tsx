@@ -3,11 +3,11 @@
 import { ModeToggle } from "@/components/mode-toggle"
 import { MainNav } from "./main-nav"
 import { Logout } from "./logout"
-import { TSessionSchema } from "@/lib/schema/session"
 import AuthSheet from "./auth-sheet"
+import { TUserTableSchema } from "@/lib/schema/user"
 
 type SiteHeaderProps = {
-  session: TSessionSchema | undefined
+  session: TUserTableSchema | undefined
 }
 
 export function SiteHeader(props: SiteHeaderProps) {
@@ -18,10 +18,10 @@ export function SiteHeader(props: SiteHeaderProps) {
         <div className="flex flex-1 items-center justify-between space-x-2 md:justify-end">
           <div className="w-full flex-1 md:w-auto md:flex-none"></div>
           <nav className="flex items-center gap-x-2">
-            {props.session?.user ? (
+            {props.session ? (
               <>
                 <div>
-                  <h4 className="text-sm font-medium leading-none">{props.session.user.name}</h4>
+                  <h4 className="text-sm font-medium leading-none">{props.session.name}</h4>
                 </div>
                 <Logout />
               </>

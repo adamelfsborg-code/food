@@ -1,6 +1,7 @@
 import { NextRequest } from "next/server";
-import { updateSession } from "./lib/auth";
+import { cookies } from "next/headers";
 
 export async function middleware(request: NextRequest) {
-  updateSession(request)
+  const user = cookies().get('X-USER-ID')
+  console.log(user);
 }
