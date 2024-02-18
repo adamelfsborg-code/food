@@ -6,6 +6,8 @@ import { ThemeProvider } from "@/components/theme-provider";
 import { SiteHeader } from "@/components/site-header";
 import { Toaster } from "@/components/ui/toaster";
 import { getSession } from "@/lib/auth";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import SidebarNav from "@/components/sidebar-nav";
 
 export const metadata: Metadata = {
   title: "Food",
@@ -41,7 +43,16 @@ export default async function RootLayout({
         <div vaul-drawer-wrapper="">
           <div className="relative flex min-h-screen flex-col bg-background">
             <SiteHeader session={session} />
-            <main className="flex-1">{children}</main>
+            <div className="flex" >
+              <aside className="fixed top-14 z-30 hidden h-[calc(100vh-3.5rem)] w-[20rem] shrink-0 md:sticky md:block">
+                <ScrollArea className="h-full">
+                  <SidebarNav />
+                </ScrollArea>
+              </aside>
+              <main className="flex-1 w-full h-full bg-slate-500 relative p-2">
+                {children}
+              </main>
+            </div>
           </div>
         </div>
         </ThemeProvider>

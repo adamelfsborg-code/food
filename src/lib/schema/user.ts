@@ -2,8 +2,8 @@ import { z } from "zod";
 import { ZodCustomDate } from "./types";
 
 export const UserDtoSchema = z.object({
-  name: z.string(),
-  password: z.string().min(10)
+  name: z.string().min(3).max(20),
+  password: z.string().min(3).max(50)
 });
 
 export type TUserDtoSchema = z.infer<typeof UserDtoSchema>;

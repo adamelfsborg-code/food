@@ -1,17 +1,10 @@
-import { toast } from "@/components/ui/use-toast";
-import { cn } from "@/lib/utils";
-import { useEffect } from "react";
-
-export type PageProps = {
-  params: { [key: string]: string | string[] | undefined };
-  searchParams?: { [key: string]: string | string[] | undefined };
-};
+import { PageProps } from "@/types/page";
 
 const Page = async (props: PageProps) => {
   return (
-    <main className="container relative">
-      
-    </main>
+    <div className="relative">
+      hej
+    </div>
   )
 }
 export default Page;
