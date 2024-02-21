@@ -22,7 +22,7 @@ export const pages: pagesConfig = {
         },
         {
           label: "Food Types",
-          href: "/culinary/food-types",
+          href: "/culinary/foodtypes",
           icon: 'lemon'
         },
       ],
