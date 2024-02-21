@@ -5,7 +5,7 @@ import CategorySheet from '@/components/category/sheet'
 import { columns } from '@/components/category/columns'
 import { PageProps } from '@/types/page'
 import { redirect } from 'next/navigation'
-import { AlertDialogDelete } from '@/components/category/delete'
+import { CategoryDelete } from '@/components/category/delete'
 import { wait } from '@/lib/helper'
 import SiteHeader from '@/components/site-header'
 import SiteHero from '@/components/site-hero'
@@ -52,7 +52,7 @@ const Page = async (pageProps: PageProps) => {
         <DataTable columns={columns} data={categories.categories!} />
       </SiteBody>
 
-      <AlertDialogDelete category={deleteCategory.category!} open={deleteCategory.category ? true : false} />
+      <CategoryDelete category={deleteCategory.category!} open={deleteCategory.category ? true : false} />
     </div>
   )
 }

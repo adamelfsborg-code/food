@@ -35,15 +35,16 @@ export const CategoryTableSchema = z.object({
 
 export type TCategoryTableSchema = z.infer<typeof CategoryTableSchema>;
 
+export const CategoryGetResponseSchema = z.array(CategoryTableSchema).nullable();
+
+export type TCategoryGetResponseSchema = z.infer<typeof CategoryGetResponseSchema>;
+
 export const CategoryFilterDtoSchema = z.object({
   id: z.string().uuid()
 })
 
 export type TCategoryFilterDtoSchema = z.infer<typeof CategoryFilterDtoSchema>;
 
-export const CategoryGetResponseSchema = z.array(CategoryTableSchema)
-
-export type TCategoryGetResponseSchema = z.infer<typeof CategoryGetResponseSchema>;
 
 export const CategoryAddResponseSchema = z.object({
   message: z.string().describe('Response from API'),

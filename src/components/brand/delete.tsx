@@ -15,22 +15,24 @@ import { TCategoryTableSchema } from "@/lib/schema/category"
 import { useRouter } from 'next/navigation'
 import { useEffect, useState } from "react"
 import { toast } from "../ui/use-toast"
+import { TBrandTableSchema } from "@/lib/schema/brand"
+import { DeleteBrandAPI } from "@/actions/protected/culinary/brand"
 
-type CategoryDeleteProps = {
+type BrandDeleteProps = {
   open: boolean
-  category: TCategoryTableSchema
+  brand: TBrandTableSchema
 }
 
-export function CategoryDelete(props: CategoryDeleteProps) {
+export function BrandDelete(props: BrandDeleteProps) {
   const router  = useRouter()
   const [open, setOpen] = useState(false)
 
   useEffect(() => {
     setOpen(props.open)
-  }, [props.open, props.category])
+  }, [props.open, props.brand])
 
   const handleAction = async () => {
-    const response = await DeleteCategoryAPI({ id: props.category.id });
+    const response = await DeleteBrandAPI({ id: props.brand.id });
     
     if (!response?.success && response?.error) {
       toast({
@@ -50,7 +52,7 @@ export function CategoryDelete(props: CategoryDeleteProps) {
 
   const handleOpenChange = () => {
     setOpen(!open);
-    router.push('/culinary/categories')
+    router.push('/culinary/brands')
   }
 
   return (
@@ -59,12 +61,12 @@ export function CategoryDelete(props: CategoryDeleteProps) {
         <AlertDialogHeader>
           <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
           <AlertDialogDescription>
-            This action cannot be undone. This will permanently delete category &quot;{props.category?.name}&quot; from our servers.
+            This action cannot be undone. This will permanently delete brand &quot;{props.brand?.name}&quot; from our servers.
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
           <AlertDialogCancel>Cancel</AlertDialogCancel>
-          <AlertDialogAction onClick={handleAction}>Continue</AlertDialogAction>
+          <AlertDialogAction onClick={handleAction} >Continue</AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>
     </AlertDialog>

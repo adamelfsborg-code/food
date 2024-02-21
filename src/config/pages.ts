@@ -16,6 +16,11 @@ export const pages: pagesConfig = {
           icon: 'lemon'
         },
         {
+          label: "Brands",
+          href: "/culinary/brands",
+          icon: 'lemon'
+        },
+        {
           label: "Food Types",
           href: "/culinary/food-types",
           icon: 'lemon'

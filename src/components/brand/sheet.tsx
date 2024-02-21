@@ -21,31 +21,30 @@ import {
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useToast } from "../ui/use-toast";
 import { Input } from "../ui/input";
-import { CategoryCreateDtoSchema, TCategoryCreateDtoSchema, TCategoryTableSchema } from "@/lib/schema/category";
-import { AddCategoryAPI, EditCategoryAPI } from "@/actions/protected/culinary/category";
 import { useEffect, useState } from "react";
-import { RedirectType, redirect } from "next/navigation";
 import { useRouter } from 'next/navigation'
+import { BrandCreateDtoSchema, TBrandCreateDtoSchema, TBrandTableSchema } from "@/lib/schema/brand";
+import { AddBrandAPI, EditBrandAPI } from "@/actions/protected/culinary/brand";
 
-type CategorySheetProps = {
+type BrandSheetProps = {
   open: boolean
-  category?: TCategoryTableSchema
+  brand?: TBrandTableSchema
 };
 
-const CategorySheet = (props: CategorySheetProps) => {
+const BrandSheet = (props: BrandSheetProps) => {
   const router = useRouter()
   const [open, setOpen] = useState(false)
   const { toast } = useToast();
-  const form = useForm<TCategoryCreateDtoSchema>({
-    resolver: zodResolver(CategoryCreateDtoSchema),
+  const form = useForm<TBrandCreateDtoSchema>({
+    resolver: zodResolver(BrandCreateDtoSchema),
     defaultValues: {
-      name: props.category?.name,
+      name: props.brand?.name,
     },
   });
 
-  async function onSubmit(values: TCategoryCreateDtoSchema) {
-    if (props.category) {
-      const response = await EditCategoryAPI({...props.category, ...values });
+  async function onSubmit(values: TBrandCreateDtoSchema) {
+    if (props.brand) {
+      const response = await EditBrandAPI({...props.brand, ...values });
     
       if (!response?.success && response?.error) {
         toast({
@@ -60,10 +59,10 @@ const CategorySheet = (props: CategorySheetProps) => {
         description: response.message,
       });
 
-      return router.push('/culinary/categories')
+      return router.push('/culinary/brands')
     }
 
-    const response = await AddCategoryAPI(values);
+    const response = await AddBrandAPI(values);
     
     if (!response?.success && response?.error) {
       toast({
@@ -78,18 +77,18 @@ const CategorySheet = (props: CategorySheetProps) => {
       description: response.message,
     });
 
-    return router.push('/culinary/categories')
+    return router.push('/culinary/brands')
   }
 
   const handleOpenChange = () => {
     setOpen(!open)
-    router.push('/culinary/categories')
+    router.push('/culinary/brands')
   }
 
   useEffect(() => {
     setOpen(props.open)
-    form.setValue("name", props.category?.name || '');
-  }, [props.category, props.open, form])
+    form.setValue("name", props.brand?.name || '');
+  }, [props.brand, props.open, form])
 
   return (
     <Sheet open={open} onOpenChange={handleOpenChange} >
@@ -98,8 +97,8 @@ const CategorySheet = (props: CategorySheetProps) => {
       </SheetTrigger> 
       <SheetContent>
         <SheetHeader>
-          <SheetTitle>Category</SheetTitle>
-          <SheetDescription>Add categories here.</SheetDescription>
+          <SheetTitle>Brand</SheetTitle>
+          <SheetDescription>Add brands here.</SheetDescription>
         </SheetHeader>
         <div className="grid gap-4 py-4">
           <Form {...form}>
@@ -120,7 +119,7 @@ const CategorySheet = (props: CategorySheetProps) => {
                   </FormItem>
                 )}
               />
-              <Button type="submit">{props.category ? 'Edit' : 'Add'}</Button>
+              <Button type="submit">{props.brand ? 'Edit' : 'Add'}</Button>
             </form>
           </Form>
         </div>
@@ -129,4 +128,4 @@ const CategorySheet = (props: CategorySheetProps) => {
   );
 };
 
-export default CategorySheet;
+export default BrandSheet;
