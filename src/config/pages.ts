@@ -22,16 +22,5 @@ export const pages: pagesConfig = {
         },
       ],
     },
-    {
-      label: "Profile",
-      icon: 'user',
-      items: [
-        {
-          label: "Settings",
-          href: "/settings",
-          icon: 'gear'
-        },
-      ],
-    },
   ],
 }

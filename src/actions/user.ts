@@ -2,7 +2,7 @@
 
 import { logout } from "@/lib/auth";
 import { parsedEnv } from "@/lib/schema/env";
-import { LoginResponseSchema, PingUserSchema, RegisterResponseSchema, UserDtoSchema, UserTableSchema } from "@/lib/schema/user";
+import { UserLoginResponseSchema, UserPingResponseSchema, UserRegisterResponseSchema, UserDtoSchema, UserTableSchema } from "@/lib/schema/user";
 import { revalidatePath } from "next/cache";
 import { cookies } from "next/headers";
 
@@ -31,7 +31,7 @@ export const RegisterAPI = async (props: unknown) => {
   }
 
   const result = await response.json();
-  const responseSchema = RegisterResponseSchema.safeParse(result)
+  const responseSchema =  UserRegisterResponseSchema.safeParse(result)
 
   if (!responseSchema.success) return {
     success: false,
@@ -69,7 +69,7 @@ export const LoginAPI = async (props: unknown) => {
   }
 
   const result = await response.json();
-  const responseSchema = LoginResponseSchema.safeParse(result)
+  const responseSchema = UserLoginResponseSchema.safeParse(result)
 
   if (!responseSchema.success) return {
     success: false,
@@ -87,7 +87,7 @@ export const LoginAPI = async (props: unknown) => {
 }
 
 export const PingUserAPI = async (props: unknown) => {
-  const pingUserSchema = PingUserSchema.safeParse(props);
+  const pingUserSchema = UserPingResponseSchema.safeParse(props);
 
   if (!pingUserSchema.success) return {
     success: false,

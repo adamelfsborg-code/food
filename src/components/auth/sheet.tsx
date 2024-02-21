@@ -1,7 +1,7 @@
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@radix-ui/react-tabs";
 import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import { Button } from "./ui/button";
+import { Button } from "../ui/button";
 import {
   Form,
   FormControl,
@@ -10,21 +10,20 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "./ui/form";
+} from "../ui/form";
 import {
   Sheet,
   SheetContent,
   SheetHeader,
   SheetTitle,
   SheetDescription,
-} from "./ui/sheet";
+} from "../ui/sheet";
 import { LoginAPI, RegisterAPI } from "@/actions/user";
-import { handleZodFormErrors } from "@/lib/error";
 import { TUserDtoSchema, UserDtoSchema } from "@/lib/schema/user";
 import { cn } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useToast } from "./ui/use-toast";
-import { Input } from "./ui/input";
+import { useToast } from "../ui/use-toast";
+import { Input } from "../ui/input";
 
 type AuthSheetProps = {
   open: boolean;

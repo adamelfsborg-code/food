@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-const envSchema = z.object({
+const EnvDtoSchema = z.object({
   DB_ADDR: z.string().min(30),
   API_USER_ADDR: z.string().url(),
   API_CULINARY_ADDR: z.string().url(),
@@ -8,4 +8,4 @@ const envSchema = z.object({
   SESSION_EXPIRES: z.coerce.number()
 })
 
-export const parsedEnv = envSchema.parse(process.env);
+export const parsedEnv = EnvDtoSchema.parse(process.env);

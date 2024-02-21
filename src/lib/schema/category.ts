@@ -13,7 +13,6 @@ export const CategorySearchParamDtoSchema = z.object({
 
 export type TCategorySearchParamDtoSchema = z.infer<typeof CategorySearchParamDtoSchema>;
 
-
 export const CategoryEditDtoSchema = z.object({
   id: z.string().uuid(),
   name: z.string().min(1)
@@ -42,26 +41,26 @@ export const CategoryFilterDtoSchema = z.object({
 
 export type TCategoryFilterDtoSchema = z.infer<typeof CategoryFilterDtoSchema>;
 
-export const GetCategoryResponseSchema = z.array(CategoryTableSchema)
+export const CategoryGetResponseSchema = z.array(CategoryTableSchema)
 
-export type TGetCategoryResponseSchema = z.infer<typeof GetCategoryResponseSchema>;
+export type TCategoryGetResponseSchema = z.infer<typeof CategoryGetResponseSchema>;
 
-export const AddCategoryResponseSchema = z.object({
+export const CategoryAddResponseSchema = z.object({
   message: z.string().describe('Response from API'),
 })
 
-export type TAddCategoryResponseSchema = z.infer<typeof AddCategoryResponseSchema>;
+export type TCategoryAddResponseSchema = z.infer<typeof CategoryAddResponseSchema>;
 
-export const EditCategoryResponseSchema = z.object({
+export const CategoryEditResponseSchema = z.object({
   message: z.string().describe('Response from API'),
 })
 
-export type TEditCategoryResponseSchema = z.infer<typeof EditCategoryResponseSchema>;
+export type TCategoryEditResponseSchema = z.infer<typeof CategoryEditResponseSchema>;
 
-export const DeleteCategoryResponseSchema = z.object({
+export const CategoryDeleteResponseSchema = z.object({
   message: z.string().describe('Response from API'),
 })
 
-export type TDeleteCategoryResponseSchema = z.infer<typeof DeleteCategoryResponseSchema>;
+export type TCategoryDeleteResponseSchema = z.infer<typeof CategoryDeleteResponseSchema>;
 
 

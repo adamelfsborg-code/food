@@ -2,9 +2,9 @@
 
 import { ModeToggle } from "@/components/mode-toggle"
 import { MainNav } from "./main-nav"
-import { Logout } from "./logout"
-import AuthSheet from "./auth-sheet"
 import { TUserTableSchema } from "@/lib/schema/user"
+import AuthSheet from "./auth/sheet"
+import { Logout } from "./auth/logout"
 
 type MainHeaderProps = {
   session: TUserTableSchema | undefined
