@@ -18,7 +18,7 @@ import {
   SheetTitle,
   SheetDescription,
 } from "./ui/sheet";
-import { LoginAPI, RegisterAPI } from "@/actions/user/user";
+import { LoginAPI, RegisterAPI } from "@/actions/user";
 import { handleZodFormErrors } from "@/lib/error";
 import { TUserDtoSchema, UserDtoSchema } from "@/lib/schema/user";
 import { cn } from "@/lib/utils";

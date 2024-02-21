@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 import { Inter as FontSans } from "next/font/google";
 import { cn } from "@/lib/utils";
 import { ThemeProvider } from "@/components/theme-provider";
-import { SiteHeader } from "@/components/site-header";
+import { MainHeader } from "@/components/main-header";
 import { Toaster } from "@/components/ui/toaster";
 import { getSession } from "@/lib/auth";
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -42,14 +42,14 @@ export default async function RootLayout({
         >
         <div vaul-drawer-wrapper="">
           <div className="relative flex min-h-screen flex-col bg-background">
-            <SiteHeader session={session} />
+            <MainHeader session={session} />
             <div className="flex" >
-              <aside className="fixed top-14 z-30 hidden h-[calc(100vh-3.5rem)] w-[20rem] shrink-0 md:sticky md:block">
+              <aside className="fixed top-14 z-30 hidden h-[calc(100vh-3.6rem)] border-r border-border/40 w-[20rem] shrink-0 md:sticky md:block">
                 <ScrollArea className="h-full">
                   <SidebarNav />
                 </ScrollArea>
               </aside>
-              <main className="flex-1 w-full h-full bg-slate-500 relative p-2">
+              <main className="flex-1 w-full h-full relative">
                 {children}
               </main>
             </div>

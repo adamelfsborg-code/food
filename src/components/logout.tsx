@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button"
-import { LogoutUserAction } from "@/actions/user/user"
+import { LogoutUserAction } from "@/actions/user"
 import { useToast } from "./ui/use-toast";
 import { cn } from "@/lib/utils";
 

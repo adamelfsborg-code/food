@@ -31,14 +31,14 @@ const SideBarItem = (props: SideBarItemProps) => {
 
   useEffect(() => {
     if (props.items) {
-      const item = props.items.filter((item) => item.href === pathname)
+      const item = props.items.filter((item) => pathname.includes(item.href))
       if (item.length > 0) return setOpen(true);
     }
   }, [pathname, props.items])
   return (
     <li>
       <button
-        className="w-full flex items-center justify-between rounded-lg px-2 py-2 hover:bg-zinc-900 hover:text-foreground text-foreground/60 transition ease-in-out delay-150 "
+        className="w-full flex items-center justify-between rounded-lg px-2 py-2 hover:bg-accent hover:text-foreground text-foreground/60 transition ease-in-out delay-150 "
         onClick={() => setOpen(!open)}
       >
         <div className="flex items-center gap-x-2">
@@ -61,7 +61,7 @@ const SideBarItem = (props: SideBarItemProps) => {
             <li key={item.label}>
               <Link
                 href={item.href}
-                className={`flex items-center mb-2 justify-between rounded-lg px-2 py-2 hover:bg-zinc-900 hover:text-foreground text-foreground/60 ${item.href === pathname ? 'bg-zinc-900 text-foreground' : 'text-foreground/60' } `}
+                className={`flex items-center mb-2 justify-between rounded-lg px-2 py-2 hover:bg-accent hover:text-foreground text-foreground/60 ${pathname.includes(item.href) && 'bg-accent text-foreground'} `}
               >
                 <div className="flex items-center gap-x-2">
                   {getIcon(item.icon, { className: "w-4 h-4" })}

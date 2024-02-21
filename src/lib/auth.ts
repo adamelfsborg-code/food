@@ -1,5 +1,5 @@
 import { cookies } from "next/headers";
-import { PingUserAPI } from "@/actions/user/user";
+import { PingUserAPI } from "@/actions/user";
 
 export async function logout() {
   cookies().set("X-USER-ID", "", { expires: new Date(0) });
