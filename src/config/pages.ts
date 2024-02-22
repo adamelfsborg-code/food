@@ -25,6 +25,11 @@ export const pages: pagesConfig = {
           href: "/culinary/foodtypes",
           icon: 'lemon'
         },
+        {
+          label: "Foods",
+          href: "/culinary/foods",
+          icon: 'lemon'
+        },
       ],
     },
   ],

@@ -13,24 +13,24 @@ import {
 import { useRouter } from 'next/navigation'
 import { useEffect, useState } from "react"
 import { toast } from "../ui/use-toast"
-import { TBrandTableSchema } from "@/lib/schema/brand"
-import { DeleteBrandAPI } from "@/actions/protected/culinary/brand"
+import { DeleteFoodAPI } from "@/actions/protected/culinary/food"
+import { TFoodTableSchema } from "@/lib/schema/food"
 
-type BrandDeleteProps = {
+type FoodDeleteProps = {
   open: boolean
-  brand: TBrandTableSchema
+  food: TFoodTableSchema
 }
 
-export function BrandDelete(props: BrandDeleteProps) {
+export function FoodDelete(props: FoodDeleteProps) {
   const router  = useRouter()
   const [open, setOpen] = useState(false)
 
   useEffect(() => {
     setOpen(props.open)
-  }, [props.open, props.brand])
+  }, [props.open, props.food])
 
   const handleAction = async () => {
-    const response = await DeleteBrandAPI({ id: props.brand.id });
+    const response = await DeleteFoodAPI({ id: props.food.id });
     
     if (!response?.success && response?.error) {
       toast({
@@ -50,7 +50,7 @@ export function BrandDelete(props: BrandDeleteProps) {
 
   const handleOpenChange = () => {
     setOpen(!open);
-    router.push('/culinary/brands')
+    router.push('/culinary/foods')
   }
 
   return (
@@ -59,7 +59,7 @@ export function BrandDelete(props: BrandDeleteProps) {
         <AlertDialogHeader>
           <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
           <AlertDialogDescription>
-            This action cannot be undone. This will permanently delete brand &quot;{props.brand?.name}&quot; from our servers.
+            This action cannot be undone. This will permanently delete food &quot;{props.food?.name}&quot; from our servers.
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>

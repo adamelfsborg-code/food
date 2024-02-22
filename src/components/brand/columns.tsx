@@ -1,17 +1,13 @@
 "use client"
 
-import { TCategoryTableSchema } from "@/lib/schema/category"
 import { ColumnDef } from "@tanstack/react-table"
 import { Button } from "../ui/button"
 import { DotsHorizontalIcon } from "@radix-ui/react-icons"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "../ui/dropdown-menu"
 import Link from "next/link"
+import { TBrandTableSchema } from "@/lib/schema/brand"
 
-export const columns: ColumnDef<TCategoryTableSchema>[] = [
-  {
-    accessorKey: "id",
-    header: "Id",
-  },
+export const columns: ColumnDef<TBrandTableSchema>[] = [
   {
     accessorKey: "name",
     header: "Name",

@@ -1,13 +1,14 @@
 "use client"
 
+
 import { ColumnDef } from "@tanstack/react-table"
 import { Button } from "../ui/button"
 import { DotsHorizontalIcon } from "@radix-ui/react-icons"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "../ui/dropdown-menu"
 import Link from "next/link"
-import { TFoodTypeTableSchema } from "@/lib/schema/foodtype"
+import { TFoodTableSchema } from "@/lib/schema/food"
 
-export const columns: ColumnDef<TFoodTypeTableSchema>[] = [
+export const columns: ColumnDef<TFoodTableSchema>[] = [
   {
     accessorKey: "name",
     header: "Name",
@@ -17,14 +18,50 @@ export const columns: ColumnDef<TFoodTypeTableSchema>[] = [
     header: "Timestamp",
   },
   {
-    accessorKey: "category",
-    header: "Category",
+    accessorKey: "foodtype",
+    header: "Food Type",
+  },
+  {
+    accessorKey: "brand",
+    header: "Brand",
+  },
+  {
+    accessorKey: "kcal",
+    header: "KCAL",
+  },
+  {
+    accessorKey: "protein",
+    header: "Protein",
+  },
+  {
+    accessorKey: "carbs",
+    header: "Carbs",
+  },
+  {
+    accessorKey: "fat",
+    header: "Fat",
+  },
+  {
+    accessorKey: "saturated",
+    header: "Saturated",
+  },
+  {
+    accessorKey: "unsaturated",
+    header: "Unsaturated",
+  },
+  {
+    accessorKey: "fiber",
+    header: "Fiber",
+  },
+  {
+    accessorKey: "sugars",
+    header: "Sugars",
   },
   {
     id: "actions",
     enableHiding: false,
     cell: ({ row }) => {
-      const foodType = row.original
+      const food = row.original
  
       return (
         <DropdownMenu>
@@ -39,7 +76,7 @@ export const columns: ColumnDef<TFoodTypeTableSchema>[] = [
             <DropdownMenuItem asChild>
               <Link
                 href={{
-                  query: { editId: foodType.id },
+                  query: { editId: food.id },
                 }}
               >
                 Edit
@@ -50,7 +87,7 @@ export const columns: ColumnDef<TFoodTypeTableSchema>[] = [
               <Link
                 className="text-red-500"
                 href={{
-                  query: { deleteId: foodType.id },
+                  query: { deleteId: food.id },
                 }}
               >
                 Delete

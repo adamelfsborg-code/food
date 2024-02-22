@@ -67,7 +67,6 @@ const SideBarItem = (props: SideBarItemProps) => {
                   {getIcon(item.icon, { className: "w-4 h-4" })}
                   {item.label}
                 </div>
-                <Badge>{Math.floor(Math.random() * 20)}</Badge>
               </Link>
             </li>
           ))}

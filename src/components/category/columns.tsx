@@ -9,28 +9,7 @@ import { DeleteCategoryAPI } from "@/actions/protected/culinary/category"
 import { toast } from "../ui/use-toast"
 import Link from "next/link"
 
-const handleDelete = async (category: TCategoryTableSchema) => {
-  const response = await DeleteCategoryAPI({ id: category.id })
-  if (!response.success) {
-    toast({
-      variant: 'destructive',
-      description: response.error
-    })
-
-    return
-  }
-
-  toast({
-    description: response.message
-  })
-}
-
-
 export const columns: ColumnDef<TCategoryTableSchema>[] = [
-  {
-    accessorKey: "id",
-    header: "Id",
-  },
   {
     accessorKey: "name",
     header: "Name",

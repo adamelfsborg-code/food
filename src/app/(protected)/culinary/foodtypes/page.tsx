@@ -43,7 +43,7 @@ const Page = async (pageProps: PageProps) => {
   return (
     <div className='relative' >
       <SiteHeader>
-        <h4 className='font-bold text-lg' >Categories</h4>
+        <h4 className='font-bold text-lg' >Food Types</h4>
       </SiteHeader>
 
       <SiteHero>
