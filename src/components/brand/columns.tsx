@@ -6,6 +6,7 @@ import { DotsHorizontalIcon } from "@radix-ui/react-icons"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "../ui/dropdown-menu"
 import Link from "next/link"
 import { TBrandTableSchema } from "@/lib/schema/brand"
+import { formatDate } from "@/lib/date"
 
 export const columns: ColumnDef<TBrandTableSchema>[] = [
   {
@@ -15,6 +16,10 @@ export const columns: ColumnDef<TBrandTableSchema>[] = [
   {
     accessorKey: "timestamp",
     header: "Timestamp",
+    cell: ({ row }) => {
+      const brand = row.original
+      return formatDate(brand.timestamp)
+    },
   },
   {
     id: "actions",

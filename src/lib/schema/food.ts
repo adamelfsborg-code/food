@@ -1,5 +1,8 @@
 import { z } from "zod";
 import { ZodCustomDate } from "./types";
+import { UserTableSchema } from "./user";
+import { FoodTypeTableSchema } from "./foodtype";
+import { BrandTableSchema } from "./brand";
 
 export const FoodCreateDtoSchema = z.object({
   name: z.string().min(1),
@@ -8,11 +11,11 @@ export const FoodCreateDtoSchema = z.object({
   kcal: z.coerce.number(),
   protein: z.coerce.number(),
   carbs: z.coerce.number(),
+  fiber: z.coerce.number(),
+  sugars: z.coerce.number(),
   fat: z.coerce.number(),
   saturated: z.coerce.number(),
   unsaturated: z.coerce.number(),
-  fiber: z.coerce.number(),
-  sugars: z.coerce.number()
 });
 
 export type TFoodCreateDtoSchema = z.infer<typeof FoodCreateDtoSchema>;
@@ -31,11 +34,11 @@ export const FoodEditDtoSchema = z.object({
   kcal: z.coerce.number(),
   protein: z.coerce.number(),
   carbs: z.coerce.number(),
+  fiber: z.coerce.number(),
+  sugars: z.coerce.number(),
   fat: z.coerce.number(),
   saturated: z.coerce.number(),
   unsaturated: z.coerce.number(),
-  fiber: z.coerce.number(),
-  sugars: z.coerce.number()
 });
 
 export type TFoodEditDtoSchema = z.infer<typeof FoodEditDtoSchema>;
@@ -56,18 +59,41 @@ export const FoodTableSchema = z.object({
   kcal: z.coerce.number(),
   protein: z.coerce.number(),
   carbs: z.coerce.number(),
+  fiber: z.coerce.number(),
+  sugars: z.coerce.number(),
   fat: z.coerce.number(),
   saturated: z.coerce.number(),
   unsaturated: z.coerce.number(),
-  fiber: z.coerce.number(),
-  sugars: z.coerce.number()
 })
 
 export type TFoodTableSchema = z.infer<typeof FoodTableSchema>;
 
-export const FoodGetResponseSchema = z.array(FoodTableSchema)
+export const FoodGetResponseSchema = z.array(FoodTableSchema).nullable()
 
 export type TFoodGetResponseSchema = z.infer<typeof FoodGetResponseSchema>;
+
+export const FoodTableExtendedSchema = z.object({
+  id: z.string().uuid(),
+  timestamp: ZodCustomDate,
+  user: UserTableSchema,
+  foodtype: FoodTypeTableSchema,
+  brand: BrandTableSchema,
+  name: z.string().min(1),
+  kcal: z.coerce.number(),
+  protein: z.coerce.number(),
+  carbs: z.coerce.number(),
+  fiber: z.coerce.number(),
+  sugars: z.coerce.number(),
+  fat: z.coerce.number(),
+  saturated: z.coerce.number(),
+  unsaturated: z.coerce.number(),
+})
+
+export type TFoodTableExtendedSchema = z.infer<typeof FoodTableExtendedSchema>;
+
+export const FoodExtendedResponseSchema = z.array(FoodTableExtendedSchema).nullable()
+
+export type TFoodExtendedResponseSchema = z.infer<typeof FoodExtendedResponseSchema>;
 
 export const FoodFilterDtoSchema = z.object({
   id: z.string().uuid()

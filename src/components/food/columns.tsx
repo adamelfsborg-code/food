@@ -6,9 +6,10 @@ import { Button } from "../ui/button"
 import { DotsHorizontalIcon } from "@radix-ui/react-icons"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "../ui/dropdown-menu"
 import Link from "next/link"
-import { TFoodTableSchema } from "@/lib/schema/food"
+import { TFoodTableExtendedSchema } from "@/lib/schema/food"
+import { formatDate } from "@/lib/date"
 
-export const columns: ColumnDef<TFoodTableSchema>[] = [
+export const columns: ColumnDef<TFoodTableExtendedSchema>[] = [
   {
     accessorKey: "name",
     header: "Name",
@@ -16,13 +17,21 @@ export const columns: ColumnDef<TFoodTableSchema>[] = [
   {
     accessorKey: "timestamp",
     header: "Timestamp",
+    cell: ({ row }) => {
+      const food = row.original
+      return formatDate(food.timestamp)
+    },
   },
   {
-    accessorKey: "foodtype",
+    accessorKey: "user.name",
+    header: "User",
+  },
+  {
+    accessorKey: "foodtype.name",
     header: "Food Type",
   },
   {
-    accessorKey: "brand",
+    accessorKey: "brand.name",
     header: "Brand",
   },
   {

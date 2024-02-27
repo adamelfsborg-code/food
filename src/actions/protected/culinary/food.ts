@@ -7,8 +7,8 @@ import {
   FoodDeleteResponseSchema,
   FoodEditDtoSchema,
   FoodEditResponseSchema,
+  FoodExtendedResponseSchema,
   FoodFilterDtoSchema,
-  FoodGetResponseSchema,
   FoodTableSchema,
 } from "@/lib/schema/food";
 import { parsedEnv } from "@/lib/schema/env";
@@ -41,10 +41,8 @@ export const ListFoodsAPI = async (props: unknown) => {
   }
 
   const result = await response.json();
-  const responseSchema = FoodGetResponseSchema.safeParse(result);
+  const responseSchema = FoodExtendedResponseSchema.safeParse(result);
   if (!responseSchema.success) {
-    console.log(responseSchema.error)
-    console.log(result)
     return {
       success: false,
       error: responseSchema.error.message,

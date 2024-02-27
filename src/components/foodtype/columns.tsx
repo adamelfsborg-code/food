@@ -6,6 +6,7 @@ import { DotsHorizontalIcon } from "@radix-ui/react-icons"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "../ui/dropdown-menu"
 import Link from "next/link"
 import { TFoodTypeTableSchema } from "@/lib/schema/foodtype"
+import { formatDate } from "@/lib/date"
 
 export const columns: ColumnDef<TFoodTypeTableSchema>[] = [
   {
@@ -15,6 +16,10 @@ export const columns: ColumnDef<TFoodTypeTableSchema>[] = [
   {
     accessorKey: "timestamp",
     header: "Timestamp",
+    cell: ({ row }) => {
+      const foodType = row.original
+      return formatDate(foodType.timestamp)
+    },
   },
   {
     accessorKey: "category",

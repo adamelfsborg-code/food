@@ -34,7 +34,7 @@ import { TBrandTableSchema } from "@/lib/schema/brand";
 
 type FoodSheetProps = {
   open: boolean
-  food?: TFoodCreateDtoSchema
+  food?: TFoodTableSchema
   foodTypes: TFoodTypeTableSchema[]
   brands: TBrandTableSchema[]
 };
@@ -43,8 +43,7 @@ const FoodSheet = (props: FoodSheetProps) => {
   const router = useRouter()
   const [open, setOpen] = useState(false)
   const { toast } = useToast();
-  console.log(props)
-  const form = useForm<TFoodCreateDtoSchema>({
+  const form = useForm<TFoodTableSchema>({
     resolver: zodResolver(FoodCreateDtoSchema),
     defaultValues: {
       name: props.food?.name,
@@ -53,15 +52,15 @@ const FoodSheet = (props: FoodSheetProps) => {
       kcal: props.food?.kcal,
       protein: props.food?.protein,
       carbs: props.food?.carbs,
+      fiber: props.food?.fiber,
+      sugars: props.food?.sugars,
       fat: props.food?.fat,
       saturated: props.food?.saturated,
       unsaturated: props.food?.unsaturated,
-      fiber: props.food?.fiber,
-      sugars: props.food?.sugars,
     },
   });
 
-  async function onSubmit(values: TFoodCreateDtoSchema) {
+  async function onSubmit(values: TFoodTableSchema) {
     if (props.food) {
       const response = await EditFoodAPI({...props.food, ...values });
     
@@ -111,11 +110,11 @@ const FoodSheet = (props: FoodSheetProps) => {
     form.setValue("kcal", props.food?.kcal || 0);
     form.setValue("protein", props.food?.protein || 0);
     form.setValue("carbs", props.food?.carbs || 0);
+    form.setValue("fiber", props.food?.fiber || 0);
+    form.setValue("sugars", props.food?.sugars || 0);
     form.setValue("fat", props.food?.fat || 0);
     form.setValue("saturated", props.food?.saturated || 0);
     form.setValue("unsaturated", props.food?.unsaturated || 0);
-    form.setValue("fiber", props.food?.fiber || 0);
-    form.setValue("sugars", props.food?.sugars || 0);
   }, [props.food, props.open, form])
 
   return (
@@ -229,7 +228,7 @@ const FoodSheet = (props: FoodSheetProps) => {
                               ? props.brands.find(
                                   (brand) => brand.id === field.value
                                 )?.name
-                              : "Select Category"}
+                              : "Select Brand"}
                             <CaretSortIcon className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                           </Button>
                         </FormControl>
@@ -310,6 +309,32 @@ const FoodSheet = (props: FoodSheetProps) => {
               />
               <FormField
                 control={form.control}
+                name="fiber"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Fiber</FormLabel>
+                    <FormControl>
+                      <Input placeholder="Fiber" type="number" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="sugars"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Sugars</FormLabel>
+                    <FormControl>
+                      <Input placeholder="Sugars" type="number" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
                 name="fat"
                 render={({ field }) => (
                   <FormItem>
@@ -342,32 +367,6 @@ const FoodSheet = (props: FoodSheetProps) => {
                     <FormLabel>Unsaturated</FormLabel>
                     <FormControl>
                       <Input placeholder="Unsaturated" type="number" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="fiber"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Fiber</FormLabel>
-                    <FormControl>
-                      <Input placeholder="Fiber" type="number" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="sugars"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Sugars</FormLabel>
-                    <FormControl>
-                      <Input placeholder="Sugars" type="number" {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>

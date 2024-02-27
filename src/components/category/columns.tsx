@@ -8,6 +8,7 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel,
 import { DeleteCategoryAPI } from "@/actions/protected/culinary/category"
 import { toast } from "../ui/use-toast"
 import Link from "next/link"
+import { formatDate } from "@/lib/date"
 
 export const columns: ColumnDef<TCategoryTableSchema>[] = [
   {
@@ -17,6 +18,10 @@ export const columns: ColumnDef<TCategoryTableSchema>[] = [
   {
     accessorKey: "timestamp",
     header: "Timestamp",
+    cell: ({ row }) => {
+      const category = row.original
+      return formatDate(category.timestamp)
+    },
   },
   {
     id: "actions",
