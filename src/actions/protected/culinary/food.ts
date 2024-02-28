@@ -50,7 +50,6 @@ export const ListFoodsAPI = async (props: unknown) => {
   }
 
   const result = await response.json();
-  console.log(result)
   const responseSchema = FoodExtendedResponseSchema.safeParse(result);
   if (!responseSchema.success) {
     return {
