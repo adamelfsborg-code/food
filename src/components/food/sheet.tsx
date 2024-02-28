@@ -29,17 +29,19 @@ import { cn } from "@/lib/utils";
 import { CaretSortIcon, CheckIcon } from "@radix-ui/react-icons";
 import { Popover, PopoverTrigger, PopoverContent } from "@radix-ui/react-popover";
 import { Command, CommandInput, CommandEmpty, CommandGroup, CommandItem } from "../ui/command";
-import { TFoodTypeTableSchema } from "@/lib/schema/foodtype";
+import { TFoodTypeTableExtendedSchema, TFoodTypeTableSchema } from "@/lib/schema/foodtype";
 import { TBrandTableSchema } from "@/lib/schema/brand";
+import useParamHook from "../hooks/use-param-hook";
 
 type FoodSheetProps = {
   open: boolean
   food?: TFoodTableSchema
-  foodTypes: TFoodTypeTableSchema[]
+  foodTypes: TFoodTypeTableExtendedSchema[]
   brands: TBrandTableSchema[]
 };
 
 const FoodSheet = (props: FoodSheetProps) => {
+  const useParam = useParamHook()
   const router = useRouter()
   const [open, setOpen] = useState(false)
   const { toast } = useToast();
@@ -99,7 +101,7 @@ const FoodSheet = (props: FoodSheetProps) => {
 
   const handleOpenChange = () => {
     setOpen(!open)
-    router.push('/culinary/foods')
+    useParam.del("editId")
   }
 
   useEffect(() => {

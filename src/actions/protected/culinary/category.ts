@@ -54,7 +54,14 @@ export const ListCategoriesAPI = async (props: unknown) => {
 
   return {
     success: true,
-    categories: responseSchema.data || [],
+    categories: { 
+      rows: responseSchema.data || [],
+      pagination: {
+        pageIndex: 1,
+        pageSize: 10,
+        pageCount: 100
+      }
+    },
   };
 };
 

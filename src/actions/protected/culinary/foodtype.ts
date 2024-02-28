@@ -7,8 +7,8 @@ import {
   FoodTypeDeleteResponseSchema,
   FoodTypeEditDtoSchema,
   FoodTypeEditResponseSchema,
+  FoodTypeExtendedResponseSchema,
   FoodTypeFilterDtoSchema,
-  FoodTypeGetResponseSchema,
   FoodTypeTableSchema,
 } from "@/lib/schema/foodtype";
 import { parsedEnv } from "@/lib/schema/env";
@@ -41,7 +41,7 @@ export const ListFoodTypesAPI = async (props: unknown) => {
   }
 
   const result = await response.json();
-  const responseSchema = FoodTypeGetResponseSchema.safeParse(result);
+  const responseSchema = FoodTypeExtendedResponseSchema.safeParse(result);
 
   if (!responseSchema.success)
     return {
@@ -51,7 +51,14 @@ export const ListFoodTypesAPI = async (props: unknown) => {
 
   return {
     success: true,
-    foodtypes: responseSchema.data || [],
+    foodtypes: { 
+      rows: responseSchema.data || [],
+      pagination: {
+        pageIndex: 1,
+        pageSize: 10,
+        pageCount: 100
+      }
+    },
   };
 };
 

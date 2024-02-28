@@ -3,6 +3,7 @@
 import {
   ColumnDef,
   ColumnFiltersState,
+  PaginationState,
   flexRender,
   getCoreRowModel,
   getFilteredRowModel,
@@ -19,31 +20,53 @@ import {
   TableRow,
 } from "@/components/ui/table"
 import { Button } from "./button"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { Input } from "./input"
+import { usePathname, useRouter, useSearchParams } from "next/navigation"
+import useParamHook from "../hooks/use-param-hook"
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]
-  data: TData[]
+  data: {
+    rows: TData[],
+    pagination: PaginationState & { pageCount: number }
+  }
 }
+
 
 export function DataTable<TData, TValue>({
   columns,
   data,
 }: DataTableProps<TData, TValue>) {
+  const useParam = useParamHook()
+  
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
 
+  const [{ pageIndex, pageSize }, setPagination] =
+  useState<PaginationState>(data.pagination)
+
   const table = useReactTable({
-    data,
+    data: data.rows,
+    pageCount: data.pagination.pageCount,
     columns,
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
     onColumnFiltersChange: setColumnFilters,
     getFilteredRowModel: getFilteredRowModel(),
+    manualPagination: true,
+    onPaginationChange: setPagination,
     state: {
       columnFilters,
+      pagination: {
+        pageIndex: pageIndex,
+        pageSize: pageSize
+      }
     }
   })
+
+  useEffect(() => {
+    useParam.set("pageIndex", String(pageIndex))
+  }, [pageIndex, pageSize, useParam])
 
   return (
     <div>

@@ -14,7 +14,7 @@ import SiteBody from '@/components/site-body'
 
 
 const Page = async (pageProps: PageProps) => {
-  await wait(1000)
+  await wait(0)
   const editId = pageProps.searchParams?.editId || ''
   const deleteId = pageProps.searchParams?.deleteId || ''
   

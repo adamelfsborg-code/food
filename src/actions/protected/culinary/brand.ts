@@ -51,7 +51,14 @@ export const ListBrandsAPI = async (props: unknown) => {
 
   return {
     success: true,
-    brands: responseSchema.data || [],
+    brands: { 
+      rows: responseSchema.data || [],
+      pagination: {
+        pageIndex: 1,
+        pageSize: 10,
+        pageCount: 100
+      }
+    },
   };
 };
 

@@ -16,11 +16,12 @@ import { ListFoodTypesAPI } from '@/actions/protected/culinary/foodtype'
 
 
 const Page = async (pageProps: PageProps) => {
-  await wait(1000)
+  await wait(0)
   const editId = pageProps.searchParams?.editId || ''
   const deleteId = pageProps.searchParams?.deleteId || ''
-  
-  const foods = await ListFoodsAPI({})
+  const pageIndex = pageProps.searchParams?.pageIndex || '0'
+
+  const foods = await ListFoodsAPI({ pageIndex: pageIndex, pageSize: 10 })
   if (!foods.success) {
     return redirect('/')
   }
@@ -46,7 +47,6 @@ const Page = async (pageProps: PageProps) => {
     return redirect('/culinary/foods')
   }
 
-
   return (
     <div className='relative' >
       <SiteHeader>
@@ -58,7 +58,7 @@ const Page = async (pageProps: PageProps) => {
       </SiteHero>
 
       <SiteFocus>
-        <FoodSheet open={editFood.food ? true : false} food={editFood.food!} foodTypes={foodTypes.foodtypes!} brands={brands.brands!} />
+        <FoodSheet open={editFood.food ? true : false} food={editFood.food!} foodTypes={foodTypes.foodtypes?.rows!} brands={brands.brands?.rows!} />
       </SiteFocus>
       
       <SiteBody>

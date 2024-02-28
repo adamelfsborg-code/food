@@ -1,5 +1,7 @@
 import { z } from "zod";
 import { ZodCustomDate } from "./types";
+import { UserTableSchema } from "./user";
+import { CategoryTableSchema } from "./category";
 
 export const FoodTypeCreateDtoSchema = z.object({
   name: z.string().min(1),
@@ -41,6 +43,22 @@ export type TFoodTypeTableSchema = z.infer<typeof FoodTypeTableSchema>;
 export const FoodTypeGetResponseSchema = z.array(FoodTypeTableSchema).nullable();
 
 export type TFoodTypeGetResponseSchema = z.infer<typeof FoodTypeGetResponseSchema>;
+
+export const FoodTypeTableExtendedSchema = z.object({
+  id: z.string().uuid(),
+  user: UserTableSchema,
+  timestamp: ZodCustomDate,
+  category: CategoryTableSchema,
+  name: z.string()
+})
+
+export type TFoodTypeTableExtendedSchema = z.infer<typeof FoodTypeTableExtendedSchema>;
+
+export const FoodTypeExtendedResponseSchema = z.array(FoodTypeTableExtendedSchema).nullable();
+
+export type TFoodTypeExtendedResponseSchema = z.infer<typeof FoodTypeExtendedResponseSchema>;
+
+
 
 export const FoodTypeFilterDtoSchema = z.object({
   id: z.string().uuid()
