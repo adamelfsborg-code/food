@@ -26,12 +26,12 @@ const Page = async (pageProps: PageProps) => {
     return redirect('/')
   }
 
-  const brands = await ListBrandsAPI({})
+  const brands = await ListBrandsAPI({ pageIndex: pageIndex, pageSize: 1000 })
   if (!brands.success) {
     return redirect('/')
   }
 
-  const foodTypes = await ListFoodTypesAPI({})
+  const foodTypes = await ListFoodTypesAPI({ pageIndex: pageIndex, pageSize: 1000 })
   if (!foodTypes.success) {
     return redirect('/')
   }
@@ -58,7 +58,7 @@ const Page = async (pageProps: PageProps) => {
       </SiteHero>
 
       <SiteFocus>
-        <FoodSheet open={editFood.food ? true : false} food={editFood.food!} foodTypes={foodTypes.foodtypes?.rows!} brands={brands.brands?.rows!} />
+        <FoodSheet open={editFood.food ? true : false} food={editFood.food!} foodTypes={foodTypes.foodTypes?.rows!} brands={brands.brands?.rows!} />
       </SiteFocus>
       
       <SiteBody>

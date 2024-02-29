@@ -7,8 +7,10 @@ import {
   BrandDeleteResponseSchema,
   BrandEditDtoSchema,
   BrandEditResponseSchema,
+  BrandExtendedResponseSchema,
   BrandFilterDtoSchema,
   BrandGetResponseSchema,
+  BrandPaginationDtoSchema,
   BrandTableSchema,
 } from "@/lib/schema/brand";
 import { parsedEnv } from "@/lib/schema/env";
@@ -24,7 +26,15 @@ export const ListBrandsAPI = async (props: unknown) => {
       error: "Not authenticated",
     };
 
-  const response = await fetch(`${parsedEnv.API_CULINARY_ADDR}/brands/list`, {
+  const brandSchema = BrandPaginationDtoSchema.safeParse(props);
+
+  if (!brandSchema.success)
+    return {
+      success: false,
+      error: brandSchema.error.message,
+    };
+
+  const response = await fetch(`${parsedEnv.API_CULINARY_ADDR}/brands/list?pageIndex=${brandSchema.data.pageIndex}&pageSize=${brandSchema.data.pageSize}`, {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
@@ -41,7 +51,7 @@ export const ListBrandsAPI = async (props: unknown) => {
   }
 
   const result = await response.json();
-  const responseSchema = BrandGetResponseSchema.safeParse(result);
+  const responseSchema = BrandExtendedResponseSchema.safeParse(result);
 
   if (!responseSchema.success)
     return {
@@ -52,12 +62,8 @@ export const ListBrandsAPI = async (props: unknown) => {
   return {
     success: true,
     brands: { 
-      rows: responseSchema.data || [],
-      pagination: {
-        pageIndex: 1,
-        pageSize: 10,
-        pageCount: 100
-      }
+      rows: responseSchema.data.rows || [],
+      pagination: responseSchema.data.pagination
     },
   };
 };

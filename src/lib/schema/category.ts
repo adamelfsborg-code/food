@@ -13,6 +13,14 @@ export const CategorySearchParamDtoSchema = z.object({
 
 export type TCategorySearchParamDtoSchema = z.infer<typeof CategorySearchParamDtoSchema>;
 
+export const CategoryPaginationDtoSchema = z.object({
+  pageIndex: z.coerce.number().default(0),
+  pageSize: z.coerce.number().default(20)
+});
+
+export type TCategoryPaginationDtoSchema = z.infer<typeof CategoryPaginationDtoSchema>;
+
+
 export const CategoryEditDtoSchema = z.object({
   id: z.string().uuid(),
   name: z.string().min(1)
@@ -38,6 +46,18 @@ export type TCategoryTableSchema = z.infer<typeof CategoryTableSchema>;
 export const CategoryGetResponseSchema = z.array(CategoryTableSchema).nullable();
 
 export type TCategoryGetResponseSchema = z.infer<typeof CategoryGetResponseSchema>;
+
+
+export const CategoryExtendedResponseSchema = z.object({
+  rows: z.array(CategoryTableSchema).nullable(),
+  pagination: z.object({
+    pageIndex: z.coerce.number(),
+    pageSize: z.coerce.number(),
+    pageCount: z.coerce.number()
+  })
+}) 
+
+export type TCategoryExtendedResponseSchema = z.infer<typeof CategoryExtendedResponseSchema>;
 
 export const CategoryFilterDtoSchema = z.object({
   id: z.string().uuid()

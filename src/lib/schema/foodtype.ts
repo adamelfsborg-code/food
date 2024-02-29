@@ -16,6 +16,14 @@ export const FoodTypeSearchParamDtoSchema = z.object({
 
 export type TFoodTypeSearchParamDtoSchema = z.infer<typeof FoodTypeSearchParamDtoSchema>;
 
+export const FoodTypePaginationDtoSchema = z.object({
+  pageIndex: z.coerce.number().default(0),
+  pageSize: z.coerce.number().default(20)
+});
+
+export type TFoodTypePaginationDtoSchema = z.infer<typeof FoodTypePaginationDtoSchema>;
+
+
 export const FoodTypeEditDtoSchema = z.object({
   id: z.string().uuid(),
   name: z.string().min(1),
@@ -54,10 +62,16 @@ export const FoodTypeTableExtendedSchema = z.object({
 
 export type TFoodTypeTableExtendedSchema = z.infer<typeof FoodTypeTableExtendedSchema>;
 
-export const FoodTypeExtendedResponseSchema = z.array(FoodTypeTableExtendedSchema).nullable();
+export const FoodTypeExtendedResponseSchema = z.object({
+  rows: z.array(FoodTypeTableExtendedSchema).nullable(),
+  pagination: z.object({
+    pageIndex: z.coerce.number(),
+    pageSize: z.coerce.number(),
+    pageCount: z.coerce.number()
+  })
+}) 
 
 export type TFoodTypeExtendedResponseSchema = z.infer<typeof FoodTypeExtendedResponseSchema>;
-
 
 
 export const FoodTypeFilterDtoSchema = z.object({

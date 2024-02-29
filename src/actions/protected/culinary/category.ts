@@ -10,6 +10,8 @@ import {
   CategoryDeleteResponseSchema,
   CategoryEditResponseSchema,
   CategoryGetResponseSchema,
+  CategoryPaginationDtoSchema,
+  CategoryExtendedResponseSchema,
 } from "@/lib/schema/category";
 import { parsedEnv } from "@/lib/schema/env";
 import { revalidatePath } from "next/cache";
@@ -24,8 +26,16 @@ export const ListCategoriesAPI = async (props: unknown) => {
       error: "Not authenticated",
     };
 
+    const categorySchema = CategoryPaginationDtoSchema.safeParse(props);
+
+    if (!categorySchema.success)
+      return {
+        success: false,
+        error: categorySchema.error.message,
+      };
+  
   const response = await fetch(
-    `${parsedEnv.API_CULINARY_ADDR}/categories/list`,
+    `${parsedEnv.API_CULINARY_ADDR}/categories/list?pageIndex=${categorySchema.data.pageIndex}&pageSize=${categorySchema.data.pageSize}`,
     {
       method: "GET",
       headers: {
@@ -44,7 +54,7 @@ export const ListCategoriesAPI = async (props: unknown) => {
   }
 
   const result = await response.json();
-  const responseSchema = CategoryGetResponseSchema.safeParse(result);
+  const responseSchema = CategoryExtendedResponseSchema.safeParse(result);
 
   if (!responseSchema.success)
     return {
@@ -52,17 +62,13 @@ export const ListCategoriesAPI = async (props: unknown) => {
       error: responseSchema.error.message,
     };
 
-  return {
-    success: true,
-    categories: { 
-      rows: responseSchema.data || [],
-      pagination: {
-        pageIndex: 1,
-        pageSize: 10,
-        pageCount: 100
-      }
-    },
-  };
+    return {
+      success: true,
+      categories: { 
+        rows: responseSchema.data.rows || [],
+        pagination: responseSchema.data.pagination
+      },
+    };
 };
 
 export const GetCategoryAPI = async (props: unknown) => {

@@ -25,15 +25,15 @@ export const ListFoodsAPI = async (props: unknown) => {
       error: "Not authenticated",
     };
 
-  const foodchema = FoodPaginationDtoSchema.safeParse(props);
+  const foodSchema = FoodPaginationDtoSchema.safeParse(props);
 
-  if (!foodchema.success)
+  if (!foodSchema.success)
     return {
       success: false,
-      error: foodchema.error.message,
+      error: foodSchema.error.message,
     };
   
-  const response = await fetch(`${parsedEnv.API_CULINARY_ADDR}/foods/list?pageIndex=${foodchema.data.pageIndex}&pageSize=${foodchema.data.pageSize}`, {
+  const response = await fetch(`${parsedEnv.API_CULINARY_ADDR}/foods/list?pageIndex=${foodSchema.data.pageIndex}&pageSize=${foodSchema.data.pageSize}`, {
     method: "GET",
     headers: {
       "Content-Type": "application/json",

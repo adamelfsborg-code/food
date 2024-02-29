@@ -9,6 +9,7 @@ import {
   FoodTypeEditResponseSchema,
   FoodTypeExtendedResponseSchema,
   FoodTypeFilterDtoSchema,
+  FoodTypePaginationDtoSchema,
   FoodTypeTableSchema,
 } from "@/lib/schema/foodtype";
 import { parsedEnv } from "@/lib/schema/env";
@@ -24,7 +25,15 @@ export const ListFoodTypesAPI = async (props: unknown) => {
       error: "Not authenticated",
     };
 
-  const response = await fetch(`${parsedEnv.API_CULINARY_ADDR}/foodtypes/list`, {
+    const foodTypeSchema = FoodTypePaginationDtoSchema.safeParse(props);
+
+    if (!foodTypeSchema.success)
+      return {
+        success: false,
+        error: foodTypeSchema.error.message,
+      };
+
+  const response = await fetch(`${parsedEnv.API_CULINARY_ADDR}/foodtypes/list?pageIndex=${foodTypeSchema.data.pageIndex}&pageSize=${foodTypeSchema.data.pageSize}`, {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
@@ -49,17 +58,13 @@ export const ListFoodTypesAPI = async (props: unknown) => {
       error: responseSchema.error.message,
     };
 
-  return {
-    success: true,
-    foodtypes: { 
-      rows: responseSchema.data || [],
-      pagination: {
-        pageIndex: 1,
-        pageSize: 10,
-        pageCount: 100
-      }
-    },
-  };
+    return {
+      success: true,
+      foodTypes: { 
+        rows: responseSchema.data.rows || [],
+        pagination: responseSchema.data.pagination
+      },
+    };
 };
 
 export const GetFoodTypeAPI = async (props: unknown) => {

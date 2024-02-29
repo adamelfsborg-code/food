@@ -18,8 +18,10 @@ const Page = async (pageProps: PageProps) => {
   await wait(0)
   const editId = pageProps.searchParams?.editId || ''
   const deleteId = pageProps.searchParams?.deleteId || ''
+  const pageIndex = pageProps.searchParams?.pageIndex || '0'
+
   
-  const foodTypes = await ListFoodTypesAPI({})
+  const foodTypes = await ListFoodTypesAPI({ pageIndex: pageIndex, pageSize: 10 })
   if (!foodTypes.success) {
     return redirect('/')
   }
@@ -51,11 +53,11 @@ const Page = async (pageProps: PageProps) => {
       </SiteHero>
 
       <SiteFocus>
-        <FoodTypeSheet open={editFoodType.foodtype ? true : false} foodType={editFoodType.foodtype} categories={categories.categories!} />
+        <FoodTypeSheet open={editFoodType.foodtype ? true : false} foodType={editFoodType.foodtype} categories={categories.categories?.rows!} />
       </SiteFocus>
       
       <SiteBody>
-        <DataTable columns={columns} data={foodTypes.foodtypes!} />
+        <DataTable columns={columns} data={foodTypes.foodTypes!} />
       </SiteBody>
 
       <FoodTypeDelete foodType={deleteFoodType.foodtype!} open={deleteFoodType.foodtype ? true : false} />

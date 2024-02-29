@@ -17,8 +17,9 @@ const Page = async (pageProps: PageProps) => {
   await wait(0)
   const editId = pageProps.searchParams?.editId || ''
   const deleteId = pageProps.searchParams?.deleteId || ''
+  const pageIndex = pageProps.searchParams?.pageIndex || '0'
   
-  const brands = await ListBrandsAPI({})
+  const brands = await ListBrandsAPI({ pageIndex: pageIndex, pageSize: 10 })
   if (!brands.success) {
     return redirect('/')
   }

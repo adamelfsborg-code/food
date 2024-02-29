@@ -13,6 +13,13 @@ export const BrandSearchParamDtoSchema = z.object({
 
 export type TBrandSearchParamDtoSchema = z.infer<typeof BrandSearchParamDtoSchema>;
 
+export const BrandPaginationDtoSchema = z.object({
+  pageIndex: z.coerce.number().default(0),
+  pageSize: z.coerce.number().default(20)
+});
+
+export type TBrandPaginationDtoSchema = z.infer<typeof BrandPaginationDtoSchema>;
+
 export const BrandEditDtoSchema = z.object({
   id: z.string().uuid(),
   name: z.string().min(1)
@@ -38,6 +45,18 @@ export type TBrandTableSchema = z.infer<typeof BrandTableSchema>;
 export const BrandGetResponseSchema = z.array(BrandTableSchema).nullable();
 
 export type TBrandGetResponseSchema = z.infer<typeof BrandGetResponseSchema>;
+
+export const BrandExtendedResponseSchema = z.object({
+  rows: z.array(BrandTableSchema).nullable(),
+  pagination: z.object({
+    pageIndex: z.coerce.number(),
+    pageSize: z.coerce.number(),
+    pageCount: z.coerce.number()
+  })
+}) 
+
+export type TBrandExtendedResponseSchema = z.infer<typeof BrandExtendedResponseSchema>;
+
 
 export const BrandFilterDtoSchema = z.object({
   id: z.string().uuid()

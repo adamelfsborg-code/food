@@ -30,6 +30,7 @@ import { CaretSortIcon, CheckIcon } from "@radix-ui/react-icons";
 import { Popover, PopoverTrigger, PopoverContent } from "@radix-ui/react-popover";
 import { Command, CommandInput, CommandEmpty, CommandGroup, CommandItem } from "../ui/command";
 import { TCategoryTableSchema } from "@/lib/schema/category";
+import useParamHook from "../hooks/use-param-hook";
 
 type FoodTypeSheetProps = {
   open: boolean
