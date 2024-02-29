@@ -22,7 +22,6 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useToast } from "../ui/use-toast";
 import { Input } from "../ui/input";
 import { useEffect, useState } from "react";
-import { useRouter } from 'next/navigation'
 import { FoodCreateDtoSchema, TFoodCreateDtoSchema, TFoodTableSchema } from "@/lib/schema/food";
 import { AddFoodAPI, EditFoodAPI } from "@/actions/protected/culinary/food";
 import { cn } from "@/lib/utils";
@@ -41,8 +40,7 @@ type FoodSheetProps = {
 };
 
 const FoodSheet = (props: FoodSheetProps) => {
-  const useParam = useParamHook()
-  const router = useRouter()
+  const router = useParamHook()
   const [open, setOpen] = useState(false)
   const { toast } = useToast();
   const form = useForm<TFoodTableSchema>({
@@ -101,7 +99,7 @@ const FoodSheet = (props: FoodSheetProps) => {
 
   const handleOpenChange = () => {
     setOpen(!open)
-    useParam.del("editId")
+    router.del("editId")
   }
 
   useEffect(() => {

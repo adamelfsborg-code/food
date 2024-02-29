@@ -38,7 +38,7 @@ type FoodTypeSheetProps = {
 };
 
 const FoodTypeSheet = (props: FoodTypeSheetProps) => {
-  const router = useRouter()
+  const router = useParamHook()
   const [open, setOpen] = useState(false)
   const { toast } = useToast();
   const form = useForm<TFoodTypeCreateDtoSchema>({

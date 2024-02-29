@@ -22,7 +22,6 @@ import {
 import { Button } from "./button"
 import { useEffect, useState } from "react"
 import { Input } from "./input"
-import { usePathname, useRouter, useSearchParams } from "next/navigation"
 import useParamHook from "../hooks/use-param-hook"
 
 interface DataTableProps<TData, TValue> {

@@ -15,6 +15,7 @@ import { useEffect, useState } from "react"
 import { toast } from "../ui/use-toast"
 import { DeleteFoodTypeAPI } from "@/actions/protected/culinary/foodtype"
 import { TFoodTypeTableSchema } from "@/lib/schema/foodtype"
+import useParamHook from "../hooks/use-param-hook"
 
 type FoodTypeDeleteProps = {
   open: boolean
@@ -22,7 +23,7 @@ type FoodTypeDeleteProps = {
 }
 
 export function FoodTypeDelete(props: FoodTypeDeleteProps) {
-  const router  = useRouter()
+  const router  = useParamHook()
   const [open, setOpen] = useState(false)
 
   useEffect(() => {

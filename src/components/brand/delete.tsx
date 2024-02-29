@@ -15,6 +15,7 @@ import { useEffect, useState } from "react"
 import { toast } from "../ui/use-toast"
 import { TBrandTableSchema } from "@/lib/schema/brand"
 import { DeleteBrandAPI } from "@/actions/protected/culinary/brand"
+import useParamHook from "../hooks/use-param-hook"
 
 type BrandDeleteProps = {
   open: boolean
@@ -22,7 +23,7 @@ type BrandDeleteProps = {
 }
 
 export function BrandDelete(props: BrandDeleteProps) {
-  const router  = useRouter()
+  const router = useParamHook()
   const [open, setOpen] = useState(false)
 
   useEffect(() => {

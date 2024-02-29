@@ -12,9 +12,9 @@ import {
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog"
 import { TCategoryTableSchema } from "@/lib/schema/category"
-import { useRouter } from 'next/navigation'
 import { useEffect, useState } from "react"
 import { toast } from "../ui/use-toast"
+import useParamHook from "../hooks/use-param-hook"
 
 type CategoryDeleteProps = {
   open: boolean
@@ -22,7 +22,7 @@ type CategoryDeleteProps = {
 }
 
 export function CategoryDelete(props: CategoryDeleteProps) {
-  const router  = useRouter()
+  const router  = useParamHook()
   const [open, setOpen] = useState(false)
 
   useEffect(() => {

@@ -24,9 +24,14 @@ const useParamHook = () => {
     router.push(`${pathname}${query}`);
   }
 
+  const push = (path: string) => {
+    router.push(path);
+  }
+
   return {
     set,
-    del
+    del,
+    push
   }
 }
 

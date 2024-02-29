@@ -22,9 +22,9 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useToast } from "../ui/use-toast";
 import { Input } from "../ui/input";
 import { useEffect, useState } from "react";
-import { useRouter } from 'next/navigation'
 import { BrandCreateDtoSchema, TBrandCreateDtoSchema, TBrandTableSchema } from "@/lib/schema/brand";
 import { AddBrandAPI, EditBrandAPI } from "@/actions/protected/culinary/brand";
+import useParamHook from "../hooks/use-param-hook";
 
 type BrandSheetProps = {
   open: boolean
@@ -32,7 +32,7 @@ type BrandSheetProps = {
 };
 
 const BrandSheet = (props: BrandSheetProps) => {
-  const router = useRouter()
+  const router = useParamHook()
   const [open, setOpen] = useState(false)
   const { toast } = useToast();
   const form = useForm<TBrandCreateDtoSchema>({

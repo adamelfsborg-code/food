@@ -10,11 +10,11 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog"
-import { useRouter } from 'next/navigation'
 import { useEffect, useState } from "react"
 import { toast } from "../ui/use-toast"
 import { DeleteFoodAPI } from "@/actions/protected/culinary/food"
 import { TFoodTableSchema } from "@/lib/schema/food"
+import useParamHook from "../hooks/use-param-hook"
 
 type FoodDeleteProps = {
   open: boolean
@@ -22,7 +22,7 @@ type FoodDeleteProps = {
 }
 
 export function FoodDelete(props: FoodDeleteProps) {
-  const router  = useRouter()
+  const router  = useParamHook()
   const [open, setOpen] = useState(false)
 
   useEffect(() => {

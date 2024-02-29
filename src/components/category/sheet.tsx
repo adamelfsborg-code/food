@@ -25,7 +25,7 @@ import { CategoryCreateDtoSchema, TCategoryCreateDtoSchema, TCategoryTableSchema
 import { AddCategoryAPI, EditCategoryAPI } from "@/actions/protected/culinary/category";
 import { useEffect, useState } from "react";
 import { RedirectType, redirect } from "next/navigation";
-import { useRouter } from 'next/navigation'
+import useParamHook from "../hooks/use-param-hook";
 
 type CategorySheetProps = {
   open: boolean
@@ -33,7 +33,7 @@ type CategorySheetProps = {
 };
 
 const CategorySheet = (props: CategorySheetProps) => {
-  const router = useRouter()
+  const router = useParamHook()
   const [open, setOpen] = useState(false)
   const { toast } = useToast();
   const form = useForm<TCategoryCreateDtoSchema>({
